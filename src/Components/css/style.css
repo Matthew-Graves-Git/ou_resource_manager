@@ -1,0 +1,146 @@
+/*
+  color pallet
+  #877148 brown
+  #f7eda3 yellow
+  #1f1e14 black font
+*/
+
+
+
+.Container{
+    display: grid;
+    grid-template-columns: 40% 50% 10%;
+    transition: box-shadow 1s;
+    width: 100%;
+    height: max(10vh,200px);
+    margin: 1px;
+    align-items: start;
+    justify-content: start;
+    background-color: #f3f3f3;
+    border-bottom: rgb(216, 217, 221) 0.01px solid;
+
+
+  
+}
+.hole{display: flex;
+flex-wrap: wrap;
+width: max(500px,55vw);
+
+}
+
+.temp{
+  flex-grow: 3;
+}
+
+.Container:hover{
+  
+  box-shadow: rgba(71, 200, 255, 0.966) 0px 5px 15px;
+}
+.ItemDescriptionCard{
+    display: grid;  
+    padding: 1%;
+    grid-template-rows: repeat(5,15%);
+    height: 90%;
+    gap: 0px;
+    align-items: start;
+    row-gap: 10%;
+}
+
+.Item-text{
+    width: 100%;
+    height: 100%;
+    text-size-adjust: auto;
+    text-align: start;
+    font-family: Arial, Helvetica, sans-serif;
+
+    
+}
+.availiable{
+  background-color: #e6f1fc;
+  width: 40%;
+  color: #4979b6;
+  border-radius: 1%;
+  height: 100%;
+  
+}
+.Item-last{
+    
+    align-items: center;
+    align-self: self-start;
+    
+    
+}
+
+/* .Item-button{
+    width: 100%;
+    text-align: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+} */
+
+
+
+.Item-button {
+  
+  align-items: center;
+  appearance: none;
+  background-color: #f7eda3;
+  background-size: calc(100% + 20px) calc(100% + 20px);
+  border-radius: 62.5rem;
+  border-width: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #1f1e14;
+  cursor: pointer;
+  font-family: CircularStd,sans-serif;
+  font-size: auto;
+  height: 40px;
+  width: 90%;
+  margin-top: 30%;
+  margin-bottom: 30%;
+  justify-content: center;
+  line-height: 1.5;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color .2s,background-position .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: bottom;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Text-container{
+  width:90%;
+ margin-top: 5%;
+  margin-bottom: 2%;
+  margin-left: 10%;
+}
+
+.Image-container{
+  margin-left: 5%;
+  width: 90%;
+  height: max(200px,10vh);
+}
+.Image-container img{
+  width: max(200px,90%);
+  height: max(200px,10vh);
+  object-fit: scale-down  ;
+}
+
+.Item-button:active,
+.Item-button:focus {
+  outline: none;
+}
+
+.Item-button:hover {
+  background-position: -20px -20px;
+}
+
+.Item-button:focus:not(:active) {
+  box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 .125em;
+}
+
+
+
