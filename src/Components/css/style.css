@@ -18,10 +18,8 @@
     justify-content: start;
     background-color: #f3f3f3;
     border-bottom: rgb(216, 217, 221) 0.01px solid;
-
-
-  
 }
+
 .hole{display: flex;
 flex-wrap: wrap;
 width: max(500px,55vw);
@@ -43,7 +41,7 @@ width: max(500px,55vw);
     height: 90%;
     gap: 0px;
     align-items: start;
-    row-gap: 10%;
+    row-gap: 11%;
 }
 
 .Item-text{
