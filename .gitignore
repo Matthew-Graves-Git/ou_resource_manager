@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+/backend/.idea
 # production
 /build
 

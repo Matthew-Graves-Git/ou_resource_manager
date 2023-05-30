@@ -8,7 +8,7 @@ const ItemDescriptionCard = (props) => {
     return(
         <div className='ItemDescriptionCard'>
             {Object.entries(props.json).map(([propName,propData]) => {
-                return <Item item={propName} data = {propData}></Item>
+                return <Item key = {propName} item={propName} data = {propData}></Item>
             })}
             
         </div>

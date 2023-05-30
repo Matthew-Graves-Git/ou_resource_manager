@@ -41,7 +41,7 @@ width: max(500px,55vw);
     height: 90%;
     gap: 0px;
     align-items: start;
-    row-gap: 11%;
+    row-gap: 0%;
 }
 
 .Item-text{
@@ -60,6 +60,10 @@ width: max(500px,55vw);
   border-radius: 1%;
   height: 100%;
   
+}
+.price{
+  color: #01764f;
+  text-size-adjust: auto;
 }
 .Item-last{
     
@@ -113,7 +117,7 @@ width: max(500px,55vw);
   width:90%;
  margin-top: 5%;
   margin-bottom: 2%;
-  margin-left: 10%;
+  margin-left: 3%;
 }
 
 .Image-container{

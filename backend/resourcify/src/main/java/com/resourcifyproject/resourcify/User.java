@@ -10,8 +10,8 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    private char type;
-    private String username, password, lastName, firstName;
+    private Role role;
+    private String username, password, lastname, firstname;
     private int availablefunds = 0;
 
     public Integer getId() {
@@ -20,14 +20,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public char getType() {
-        return type;
-    }
-
-    public void setType(char type) {
-        this.type = type;
     }
 
     public String getUsername() {
@@ -46,20 +38,20 @@ public class User {
         this.password = password;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstName) {
+        this.firstname = firstname;
     }
 
     public int getAvailablefunds() {
@@ -68,5 +60,13 @@ public class User {
 
     public void setAvailablefunds(int availablefunds) {
         this.availablefunds = availablefunds;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = Role.valueOf(role);
     }
 }
