@@ -6,7 +6,6 @@
 */
 
 
-
 .Container{
     display: grid;
     grid-template-columns: 40% 50% 10%;
@@ -23,7 +22,7 @@
 .hole{display: flex;
 flex-wrap: wrap;
 width: max(500px,55vw);
-row-gap: 15px;
+row-gap: 10px;
 
 }
 
