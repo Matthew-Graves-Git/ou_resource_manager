@@ -13,7 +13,7 @@ const Home = (props) => {
       <DisplayCard key={item.model} className='temp'>
       <img  alt= {item.name}src = {item.image}></img>
       <ItemDescriptionCard json={item}/>
-      <button className='Item-button'onClick={() => props.assets.handleRent(item.model, props.cat)}>+ Rent</button>
+      <button className='Item-button'onClick={() => props.assets.handleRent(item.model, props.assets.cat)}>+ Rent</button>
       </DisplayCard>
     )})}
     </div>
