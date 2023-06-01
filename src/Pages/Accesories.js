@@ -4,7 +4,7 @@ import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 
 
-const Home = (props) => {
+const Accesories = (props) => {
     
 
   return (
@@ -19,6 +19,5 @@ const Home = (props) => {
     </div>
   );
 }
-
  
-export default Home;
+export default Accesories;

@@ -6,8 +6,10 @@ const NavBar = () => {
         <nav className="navbar">
             <div className="links">
                 <Link to="/Home">All</Link>
+                <Link to="/PCs">PCs</Link>
+                <Link to="/Tablets">Tablets</Link>
+                <Link to="/Accesories">Accesories</Link>
                 <Link to="/Laptops">Laptops</Link>
-                <Link to="/Cameras">Cameras</Link>
                 <Link to="/Cart">
                     <img alt='cart' src={cart}/>
                 </Link>

@@ -23,6 +23,7 @@
 .hole{display: flex;
 flex-wrap: wrap;
 width: max(500px,55vw);
+row-gap: 15px;
 
 }
 
