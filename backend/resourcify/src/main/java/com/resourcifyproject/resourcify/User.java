@@ -1,15 +1,14 @@
 package com.resourcifyproject.resourcify;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@SecondaryTable(name="cart", pkJoinColumns = @PrimaryKeyJoinColumn(name = "item_Id"))
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private String username, password, lastname, firstname;
     private int availablefunds = 0;

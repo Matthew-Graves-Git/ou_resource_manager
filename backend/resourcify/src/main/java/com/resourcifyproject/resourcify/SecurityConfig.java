@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         //.requestMatchers("/login").permitAll()   MUST IMPLEMENT CUSTOM LOGIN PAGE LATER
                         .requestMatchers("/demo/add").permitAll()
+                        .requestMatchers("/demo/addresource").permitAll()
+                        .requestMatchers("/demo/additem").permitAll()
                         .requestMatchers("/demo/all")
                         .authenticated()     //FOR TESTING, REPLACE WITH .permitAll()
 

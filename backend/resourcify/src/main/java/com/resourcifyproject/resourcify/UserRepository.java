@@ -1,7 +1,7 @@
 package com.resourcifyproject.resourcify;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.resourcifyproject.resourcify.User;
+import com.resourcifyproject.resourcify.User;  // remove this?
 
 import java.util.Optional;
 
