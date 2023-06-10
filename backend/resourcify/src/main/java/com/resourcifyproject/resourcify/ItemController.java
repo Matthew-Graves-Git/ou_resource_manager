@@ -16,27 +16,27 @@ public class ItemController {
 
     @Autowired
     private ResourceRepository resourceRepository;
-/*
-    @GetMapping("/borrowing/{resourceId}")
-    public ResponseEntity<Integer> getNumAvailableBorrowing(@PathVariable Integer resourceId) {
-        Optional<Resource> resourceOptional = resourceRepository.findById(resourceId);
-        if (!resourceOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+    /*
+        @GetMapping("/borrowing/{resourceId}")
+        public ResponseEntity<Integer> getNumAvailableBorrowing(@PathVariable Integer resourceId) {
+            Optional<Resource> resourceOptional = resourceRepository.findById(resourceId);
+            if (!resourceOptional.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            int count = itemService.getNumAvailableBorrowing(resourceOptional.get());
+            return ResponseEntity.ok(count);
         }
-        int count = itemService.getNumAvailableBorrowing(resourceOptional.get());
-        return ResponseEntity.ok(count);
-    }
 
-    @GetMapping("/sale/{resourceId}")
-    public ResponseEntity<Integer> getNumAvailableSale(@PathVariable Integer resourceId) {
-        Optional<Resource> resourceOptional = resourceRepository.findById(resourceId);
-        if (!resourceOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+        @GetMapping("/sale/{resourceId}")
+        public ResponseEntity<Integer> getNumAvailableSale(@PathVariable Integer resourceId) {
+            Optional<Resource> resourceOptional = resourceRepository.findById(resourceId);
+            if (!resourceOptional.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            int count = itemService.getNumAvailableSale(resourceOptional.get());
+            return ResponseEntity.ok(count);
         }
-        int count = itemService.getNumAvailableSale(resourceOptional.get());
-        return ResponseEntity.ok(count);
-    }
-*/
+    */
     @GetMapping("/borrowed/{username}")
     public ResponseEntity<List<Item>> getBorrowedItems(@PathVariable String username) {
         List<Item> items = itemService.getBorrowedItems(username);

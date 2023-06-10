@@ -51,7 +51,7 @@ const handleRent = (model,category) =>{
   const t2 = cart.slice();
   const t3 = temp.filter(item => item.model === model);
   const t4 = temp.filter(item => item.model !== model);
-  setTotal(total + parseInt(t3[0].price));
+  addToTotal(parseInt(t3[0].price));
   t2.push(t3[0]);
   setCart(t2);
   if(category === 'all'){
@@ -65,8 +65,31 @@ const handleRent = (model,category) =>{
   }else if(category === 'lap'){
     setlaptops(t4)
   }
-
   
+}
+
+const saveToCart = (updatedCart) =>{
+  const currentCart = updatedCart.slice();
+  console.log(currentCart)
+  const savedCart = localStorage.getItem("savedCart");
+  if(savedCart){
+    localStorage.setItem("savedCart", JSON.stringify(
+      JSON.parse(savedCart)
+      .concat(currentCart))
+    )
+  }else{
+    localStorage.setItem("savedCart", JSON.stringify(currentCart))
+  }
+ 
+}
+
+const clearSessionCart = () => {
+  setCart([])
+  setTotal(0);
+}
+
+const addToTotal = (amount) =>{
+  setTotal(total + amount);
 }
 
 const prop = {handleRent,items:items,cat:"all"}
@@ -74,8 +97,11 @@ const propL = {handleRent,items:laptops,cat:"lap"}
 const propT = {handleRent,items:tablet,cat:"tab"}
 const propA = {handleRent,items:accesories,cat:"acc"}
 const propP = {handleRent,items:pcs,cat:"pc"}
-const cartProps = {cart,total}
+const cartProps = {cart,total,addToTotal,clearSessionCart}
 
+window.onbeforeunload = function() {
+  saveToCart(cart)
+};
 
   return (
     <AuthProvider>

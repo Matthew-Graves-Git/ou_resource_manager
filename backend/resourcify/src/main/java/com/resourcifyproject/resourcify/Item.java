@@ -4,15 +4,18 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
+@SecondaryTable(name="cart", pkJoinColumns = @PrimaryKeyJoinColumn(name = "item_Id"))
 public class Item {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "item_Id")
     private Integer itemId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resourceId", nullable = false)
     private Resource resource;
     private ItemType itemtype;
-    private String serialNumber, username, image;
+    private String serialNumber, username;
     private boolean isAvailable;
     private LocalDateTime TransactionTime;
     private float TransactionPrice;
@@ -58,13 +61,6 @@ public class Item {
         this.username = username;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public boolean isAvailable() {
         return isAvailable;

@@ -3,13 +3,15 @@ package com.resourcifyproject.resourcify;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="resource")
 public class Resource {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer resourceId;
+
     @Enumerated(EnumType.STRING)
     private ResourceCategory resourcecategory;
-    private String name, description;
+    private String name, description, image, model;
     private float salePrice, borrowPrice;
 
     public Integer getResourceId() {
@@ -34,6 +36,22 @@ public class Resource {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getDescription() {
