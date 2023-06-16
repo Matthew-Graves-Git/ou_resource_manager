@@ -3,6 +3,8 @@ package com.resourcifyproject.resourcify;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.Authentication;
@@ -83,7 +85,7 @@ public class MainController {
 
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/addresource") // Map ONLY POST Requests
+    @PostMapping(path="/add/resource") // Map ONLY POST Requests
     public @ResponseBody String addNewResource (@RequestBody JsonNode payload)
     {
         Resource r = new Resource();
@@ -92,7 +94,7 @@ public class MainController {
         resourcerepository.save(r);
         return "Saved resource";
     }
-    @PostMapping(path="/additem") // Map ONLY POST Requests
+    @PostMapping(path="/add/item") // Map ONLY POST Requests
     public @ResponseBody String addNewItem (@RequestBody JsonNode payload)
     {
         Resource jank = resourcerepository.findById(1).get();
@@ -104,6 +106,23 @@ public class MainController {
         itemrepository.save(i);
         return "Saved item";
     }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public class ForbiddenException extends RuntimeException {}
+    @GetMapping(path="/confirm")
+    public @ResponseBody String isAdmin (HttpServletRequest request)
+    {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        if(user != null) {
+            if ((user.getRole()) == Role.valueOf("ADMIN")) {
+                return "Success";
+            }
+        }
+        throw new ForbiddenException();
+
+    }
+
+
 
 
 }

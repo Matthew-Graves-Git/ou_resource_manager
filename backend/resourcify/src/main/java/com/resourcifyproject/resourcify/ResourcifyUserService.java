@@ -13,11 +13,11 @@ import java.util.Optional;
 public class ResourcifyUserService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userInfo = userRepository.findByUsername(username);
+        Optional<User> userInfo = repository.findByUsername(username);
         return userInfo.map(ResourcifyUser::new)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
