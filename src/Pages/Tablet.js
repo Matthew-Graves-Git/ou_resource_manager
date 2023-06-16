@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../Components/css/style.css';
 import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
@@ -6,7 +6,6 @@ import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 
 const Tablet = (props) => {
     
-    console.log(props.assets.cat)
   return (
     <div className='hole'>
       {props.assets.items.map((item) => {return (

@@ -15,24 +15,28 @@
     margin: 1px;
     align-items: start;
     justify-content: start;
-    background-color: #f3f3f3;
+    background-color: #dfdbd4;
     border-bottom: rgb(216, 217, 221) 0.01px solid;
 }
 
 .hole{display: flex;
 flex-wrap: wrap;
 width: max(500px,55vw);
-row-gap: 10px;
+row-gap: 2px;
 
 }
 
 .temp{
   flex-grow: 3;
 }
-
+.createResourcesContainer{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 50vw 50vw;
+}
 .Container:hover{
   
-  box-shadow: rgba(71, 200, 255, 0.966) 0px 5px 15px;
+  box-shadow: #bebbb5 0px 5px 15px;
 }
 .ItemDescriptionCard{
     display: grid;  
@@ -123,11 +127,11 @@ row-gap: 10px;
 .Image-container{
   margin-left: 5%;
   width: 90%;
-  height: max(200px,10vh);
+  height: max(200px,9vh);
 }
 .Image-container img{
   width: max(200px,90%);
-  height: max(200px,10vh);
+  height: max(200px,9vh);
   object-fit: scale-down  ;
 }
 

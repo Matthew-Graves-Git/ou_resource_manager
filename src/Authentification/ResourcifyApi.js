@@ -4,7 +4,8 @@ import { config } from './Constants'
 export const ResourcifyApi = {
   authenticate,
   signup,
-  basicAuth
+  basicAuth,
+  IsAdmin
 }
 
 function authenticate(username, password) {
@@ -23,10 +24,36 @@ function authenticate(username, password) {
   })
 }
 
-function signup(user) {
-  return instance.post('/login', user, {
-    headers: { 'Content-type': 'application/json' },
+function IsAdmin() {
+  return instance.get('/demo/confirm', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
   })
+}
+
+
+function signup(firstName, lastName,username, password) {
+  return instance.post('/demo/add',
+    {
+      role:"STUDENT",
+      username: username,
+      password:password,
+      lastname: lastName,
+      firstname: firstName
+    },
+    {
+    headers: { 'Content-type': 'application/json',
+        "Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+    })
 }
 
 

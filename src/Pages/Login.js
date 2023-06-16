@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '../Authentification/Auth';
 import { ResourcifyApi } from '../Authentification/ResourcifyApi';
@@ -21,7 +21,6 @@ const Login = () => {
             const user = { id, name, role, authdata };
             Auth.userLogin(user);
             setloggedIn(true);
-            document.body.style.background = "#e9e9e9"
             navigate("/Home")
           })
           .catch((e) => {
@@ -32,6 +31,11 @@ const Login = () => {
     const revealErr = () =>{
       return <p>Bad Credentials, Try Again</p>
     }
+
+    const signUpRequest = () =>{
+      navigate("/SignUp");
+    }
+
     return ( 
       <>
         
@@ -48,6 +52,7 @@ const Login = () => {
             <label>Password</label>
           </div>
           <button type="submit" className="button">Sign In</button>
+          <button onClick={signUpRequest} className="button">Sign Up</button>
         </form>
       </div>
       </>

@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import {all, tablets, accesorie, pc, laptop} from './temp';
-import Navbar from "./Navbar/Navbar";
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import { AuthProvider } from './Authentification/Auth';
-import { BrowserRouter as Router, Route, Routes, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Laptop from "./Pages/Laptop";
 import Cart from './Pages/Cart';
-import SecureRoute from './Authentification/SecureRoute';
+import {SecureRoute} from './Authentification/SecureRoute';
 import DefaultContainer from './Components/DefaultContainer';
 import LoginContainer from './Components/LoginContainer';
 import PC from './Pages/PC';
 import Accesories from './Pages/Accesories';
 import Tablet from './Pages/Tablet';
-
+import SignUp from './Pages/SignUp';
+import CreateResource from './Pages/Admin/CreateResource';
 
 function App() {
-  function importAll(r) {
-    let images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-    return images;
-  }
+  // function importAll(r) {
+  //   let images = {};
+  //   r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  //   return images;
+  // }
 
-  const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
+  // const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [items,setItems] = useState(all);
@@ -109,6 +109,7 @@ window.onbeforeunload = function() {
           <Routes>
             <Route element={<LoginContainer/>}>
               <Route exact path='/' element={<Login/>} />
+              <Route exact path='/SignUp' element={<SignUp/>} />
             </Route>
             <Route element={<DefaultContainer/>}>
               <Route exact path='/Home' element={<SecureRoute><Home assets={prop}/></SecureRoute>} />
@@ -117,7 +118,7 @@ window.onbeforeunload = function() {
               <Route exact path='/Tablets' element={<SecureRoute><Tablet assets={propT}/></SecureRoute>} />
               <Route exact path='/Laptops' element={<SecureRoute><Laptop assets={propL}/></SecureRoute>} />
               <Route exact path='/Cart' element={<SecureRoute><Cart assets={cartProps}/></SecureRoute>} />
-              
+              <Route exact path='/CreateResource' element={<SecureRoute><CreateResource/></SecureRoute>} />
             </Route>
           </Routes>
       </Router>

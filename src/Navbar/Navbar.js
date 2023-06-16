@@ -1,7 +1,11 @@
 import {Link} from 'react-router-dom';
+import React from 'react';
 import cart from '../Images/shopping-cart.png';
 import './navbar.css'
+import { IsAdmin } from '../Authentification/SecureRoute';
 const NavBar = () => {
+
+
     return (  
         <nav className="navbar">
             <div className="links">
@@ -13,6 +17,7 @@ const NavBar = () => {
                 <Link to="/Cart">
                     <img alt='cart' src={cart}/>
                 </Link>
+                {IsAdmin()}
             </div>
         </nav>
     );
