@@ -12,11 +12,11 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 /*
-    public int getNumAvailableBorrowing(Resource resource) {
+    public int getNumAvailableBorrowing(Resource resource) {          //can we just put this logic in the MainController method?
         return itemRepository.countItemsByResourceItemtypeAndAvail(resource, ItemType.BORROW, true);
     }
 
-    public int getNumAvailableSale(Resource resource) {
+    public int getNumAvailableSale(Resource resource) {               //can we just put this logic in the MainController method?
         return itemRepository.countItemsByResourceItemtypeAndAvail(resource, ItemType.SALE, true);
     }
 */

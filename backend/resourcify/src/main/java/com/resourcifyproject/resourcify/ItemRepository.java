@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findByUsernameAndItemtype(String username, ItemType itemType);
     //int countItemsByResourceItemtypeAndAvail(Resource resource, ItemType itemType, boolean isAvailable);
+    //^Just need to make this work. Look up JpaRepository custom queries
 }

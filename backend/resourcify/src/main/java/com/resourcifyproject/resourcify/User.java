@@ -11,7 +11,7 @@ public class User {
     private Integer id;
     private Role role;
     private String username, password, lastname, firstname;
-    private int availablefunds = 0;
+    private float availablefunds = 0;
 
     public Integer getId() {
         return id;
@@ -53,11 +53,11 @@ public class User {
         this.firstname = firstname;
     }
 
-    public int getAvailablefunds() {
+    public float getAvailablefunds() {
         return availablefunds;
     }
 
-    public void setAvailablefunds(int availablefunds) {
+    public void setAvailablefunds(float availablefunds) {
         this.availablefunds = availablefunds;
     }
 
