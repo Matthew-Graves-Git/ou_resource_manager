@@ -32,21 +32,36 @@ function App() {
   const [accesories,setaccesories] = useState(accesorie);
   const [tablet,settablet] = useState(tablets);
 
-
+const filterResources = (all) =>{
+  settablet(all.filter(item => item.role === "TABLET"))
+  setlaptops(all.filter(item => item.role === "LAPTOP"))
+  setpcs(all.filter(item => item.role === "DESKTOP"))
+  setaccesories(all.filter(item => ((item.role !== "DESKTOP") &&
+  (item.role !== "TABLET") &&
+  (item.role !== "LAPTOP")
+  )))
+}
 useEffect( () => {
   const all = [];
+  async function getResourceQty(id){
+    const stock = await ResourcifyApi.getQty(id);
+    return stock.data;
+  }
   async function getResources(){
     const resources = await ResourcifyApi.getAllItems();
     if(resources){
-      resources.data.forEach(item => {
+      resources.data.forEach( async (item) => {
+        const stock = await getResourceQty(item.resourceId)
         all.push({
-      name: item.resource.name,
-      model: item.resource.model,
-      price: item.resource.salePrice,
-      stock: "1 Available",
-      image: images[item.resource.image]
+          name: item.name,
+          model: item.model,
+          price: item.salePrice,
+          stock: stock,
+          image: images[item.image],
+          role: item.resourcecategory
         })
       });
+      filterResources(all)
     }
     setItems(all);
   }
