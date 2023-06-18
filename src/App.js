@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {all, tablets, accesorie, pc, laptop} from './temp';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
@@ -14,15 +14,16 @@ import Accesories from './Pages/Accesories';
 import Tablet from './Pages/Tablet';
 import SignUp from './Pages/SignUp';
 import CreateResource from './Pages/Admin/CreateResource';
+import { ResourcifyApi } from './Authentification/ResourcifyApi';
 
 function App() {
-  // function importAll(r) {
-  //   let images = {};
-  //   r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-  //   return images;
-  // }
+  function importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
+  }
 
-  // const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
+  const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [items,setItems] = useState(all);
@@ -32,6 +33,27 @@ function App() {
   const [tablet,settablet] = useState(tablets);
 
 
+useEffect( () => {
+  const all = [];
+  async function getResources(){
+    const resources = await ResourcifyApi.getAllItems();
+    if(resources){
+      resources.data.forEach(item => {
+        all.push({
+      name: item.resource.name,
+      model: item.resource.model,
+      price: item.resource.salePrice,
+      stock: "1 Available",
+      image: images[item.resource.image]
+        })
+      });
+    }
+    setItems(all);
+  }
+  if(all === []){
+  getResources();
+}
+}, [images,items]);
 
 const handleRent = (model,category) =>{
     let temp= []

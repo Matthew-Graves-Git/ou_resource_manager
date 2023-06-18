@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 @Controller
@@ -65,22 +65,22 @@ public class MainController {
         return resourcerepository.findAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/get/borrow")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
-    public @ResponseBody int getAvailBorrow(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
-        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
-        return itemRepository.countItems(resource, ItemType.BORROW, true);
-    }
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping(path="/get/borrow")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
+//    public @ResponseBody int getAvailBorrow(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
+//        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
+//        return itemRepository.countItems(resource, ItemType.BORROW, true);
+//    }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/get/sale")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
-    public @ResponseBody int getAvailPurchase(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
-        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
-        return itemRepository.countItems(resource, ItemType.SALE, true);
-    }
-
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping(path="/get/sale")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
+//    public @ResponseBody int getAvailPurchase(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
+//        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
+//        return itemRepository.countItems(resource, ItemType.SALE, true);
+//    }
+//
 
 //    @CrossOrigin(origins = "http://localhost:3000")
 //    @PostMapping(path="items/add")
@@ -104,6 +104,11 @@ public class MainController {
         Resource r = new Resource();
         r.setResourcecategory(payload.get("resourcecategory").textValue());
         r.setName(payload.get("name").textValue());
+        r.setImage(payload.get("image").textValue());
+        r.setModel(payload.get("model").textValue());
+        r.setBorrowPrice(Float.parseFloat(payload.get("borrowPrice").textValue()));
+        r.setSalePrice(Float.parseFloat(payload.get("salePrice").textValue()));
+        r.setDescription(payload.get("desc").textValue());
         resourcerepository.save(r);
         return "Saved resource";
     }
@@ -116,9 +121,27 @@ public class MainController {
         i.setAvailable(true);
         i.setItemtype(ItemType.SALE);
         i.setTransactionPrice(49.99F);
+        i.setUsername("");
+        i.setTransactionTime(LocalDateTime.now());
+        i.setSerialNumber("");
         itemRepository.save(i);
         return "Saved item";
     }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(path="/get/all")
+    public @ResponseBody List<Item> getAllItems()
+    {
+//        Map<String,Object> result = new HashMap<>();
+//        ArrayList<Map<String,Object>> a = new ArrayList<>();
+//        Item item = itemRepository.findAll().get(0);
+//        result.put("item_id",(item.getItemId()) );
+//        result.put("Resource", (item.getResource()));
+//        a.add(result);
+        List<Item> items = itemRepository.findAll();
+        return items;
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/funds")
     public @ResponseBody String addFunds (@RequestBody JsonNode payload) throws UsernameNotFoundException {

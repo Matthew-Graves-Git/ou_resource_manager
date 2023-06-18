@@ -5,7 +5,8 @@ export const ResourcifyApi = {
   authenticate,
   signup,
   basicAuth,
-  IsAdmin
+  IsAdmin,
+  getAllItems
 }
 
 function authenticate(username, password) {
@@ -35,6 +36,16 @@ function IsAdmin() {
   })
 }
 
+function getAllItems() {
+  return instance.get('/demo/get/all', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
 
 function signup(firstName, lastName,username, password) {
   return instance.post('/demo/add',

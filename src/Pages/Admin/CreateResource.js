@@ -78,7 +78,7 @@ const CreateResource = () => {
             <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
                 <option value="laptop">laptop</option>
                 <option value="pc">pc</option>
-                <option value="Accesories">accesorie</option>
+                <option value="Accesories">accesories</option>
                 <option value="Tablet">tablet</option>
             </select>
           <button type="submit" className="button">Create</button>
