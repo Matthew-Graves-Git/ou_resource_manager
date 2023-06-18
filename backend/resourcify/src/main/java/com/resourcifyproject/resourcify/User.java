@@ -2,24 +2,23 @@ package com.resourcifyproject.resourcify;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 @SecondaryTable(name="cart", pkJoinColumns = @PrimaryKeyJoinColumn(name = "userCart_Id"))
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Integer id;
     private Role role;
     private String username, password, lastname, firstname;
-    private float availablefunds = 0;
+    private float availableFunds = 0;
+    //private List<Resource> cart;   FIX THIS ERROR
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    }   //no setter for ID, it is permanent after being generated
 
     public String getUsername() {
         return username;
@@ -53,12 +52,12 @@ public class User {
         this.firstname = firstname;
     }
 
-    public float getAvailablefunds() {
-        return availablefunds;
+    public float getAvailableFunds() {
+        return availableFunds;
     }
 
-    public void setAvailablefunds(float availablefunds) {
-        this.availablefunds = availablefunds;
+    public void setAvailableFunds(float availablefunds) {
+        this.availableFunds = availablefunds;
     }
 
     public Role getRole() {

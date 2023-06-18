@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.lang.Math;
-
 
 
 @Controller
@@ -27,7 +25,7 @@ public class MainController {
     private ResourceRepository resourcerepository;
 
     @Autowired
-    private ItemRepository itemrepository;
+    private ItemRepository itemRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -71,20 +69,19 @@ public class MainController {
     @GetMapping(path="/get/borrow")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
     public @ResponseBody int getAvailBorrow(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
-
-        return //int from itemrepository method either thru ItemService method, or delete those methods and just do it here
+        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
+        return itemRepository.countItems(resource, ItemType.BORROW, true);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path="/get/sale")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // is this necessary?
     public @ResponseBody int getAvailPurchase(HttpServletRequest request) { //Parameter sufficient for holding desired Resource & itemType ?
-
-        return //int from itemrepository method either thru ItemService method, or delete those methods and just do it here
+        //CODE FOR GETTING RESOURCE OBJECT FROM DATA CONTAINED IN REQUEST
+        return itemRepository.countItems(resource, ItemType.SALE, true);
     }
 
 
-    //can we just delete this?
 //    @CrossOrigin(origins = "http://localhost:3000")
 //    @PostMapping(path="items/add")
 //    public @ResponseBody String addNewItem(@RequestBody JsonNode payload) {
@@ -119,14 +116,14 @@ public class MainController {
         i.setAvailable(true);
         i.setItemtype(ItemType.SALE);
         i.setTransactionPrice(49.99F);
-        itemrepository.save(i);
+        itemRepository.save(i);
         return "Saved item";
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/funds")
     public @ResponseBody String addFunds (@RequestBody JsonNode payload) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(payload.get("username").textValue()).get();
-        user.setAvailablefunds( user.getAvailablefunds() + payload.get("funds").floatValue() );
+        user.setAvailableFunds( user.getAvailableFunds() + payload.get("funds").floatValue() );
 
         return "success message";
     }
@@ -145,4 +142,23 @@ public class MainController {
         throw new ForbiddenException();
 
     }
+
+
+    /*
+    public List<Item> getBorrowedItems(String username) throws ResourceNotFoundException {
+        List<Item> borrowedItems = itemRepository.findByUsernameAndItemtype(username, ItemType.BORROW);
+        if(borrowedItems.isEmpty()){
+            throw new ResourceNotFoundException("You are not currently borrowing any items!");
+        }
+        return borrowedItems;
+    }
+
+    public List<Item> getPurchasedItems(String username) throws ResourceNotFoundException {
+        List<Item> purchasedItems = itemRepository.findByUsernameAndItemtype(username, ItemType.SALE);
+        if(purchasedItems.isEmpty()){
+            throw new ResourceNotFoundException("You have not purchased any items!");
+        }
+        return purchasedItems;
+    }
+    */
 }
