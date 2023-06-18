@@ -50,10 +50,8 @@ useEffect( () => {
     }
     setItems(all);
   }
-  if(all === []){
   getResources();
-}
-}, [images,items]);
+}, [] );
 
 const handleRent = (model,category) =>{
     let temp= []
