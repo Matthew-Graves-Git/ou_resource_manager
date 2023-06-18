@@ -8,26 +8,21 @@ public class Resource {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer resourceId;
-
     @Enumerated(EnumType.STRING)
-    private ResourceCategory resourcecategory;
-    private String name, description, image, model;
+    private ResourceCategory resourceCategory;
+    private String name, description, image, modelNumber;
     private float salePrice, borrowPrice;
 
     public Integer getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(Integer resourceId) {
-        this.resourceId = resourceId;
+    public ResourceCategory getResourceCategory() {
+        return resourceCategory;
     }
 
-    public ResourceCategory getResourcecategory() {
-        return resourcecategory;
-    }
-
-    public void setResourcecategory(String resourcecategory) {
-        this.resourcecategory = ResourceCategory.valueOf(resourcecategory);
+    public void setResourceCategory(String resourceCategory) {
+        this.resourceCategory = ResourceCategory.valueOf(resourceCategory);
     }
 
     public String getName() {
@@ -46,12 +41,12 @@ public class Resource {
         this.image = image;
     }
 
-    public String getModel() {
-        return model;
+    public String getModelNumber() {
+        return modelNumber;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setModelNumber(String model) {
+        this.modelNumber = model;
     }
 
     public String getDescription() {

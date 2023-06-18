@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,7 @@ public class MainController {
     private PasswordEncoder passwordEncoder;
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/add") // Map ONLY POST Requests
+    @PostMapping(path="/add")
     public @ResponseBody String addNewUser (@RequestBody JsonNode payload)
     {
         // @ResponseBody means the returned String is the response, not a view name
@@ -46,13 +45,41 @@ public class MainController {
         return "Saved";
     }
 
-    //do we ever use this?
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/all")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public @ResponseBody Optional<User> getAllUsers(HttpServletRequest request) {
-        // This returns a JSON or XML with the users
-        return userRepository.findByUsername(request.getRemoteUser());
+    @PostMapping(path="/add/funds")
+    public @ResponseBody String addFunds (@RequestBody JsonNode payload) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(payload.get("username").textValue()).get();
+        user.setAvailableFunds( user.getAvailableFunds() + payload.get("funds").floatValue() );
+
+        return "Added Funds";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/add/resource")
+    public @ResponseBody String addNewResource (@RequestBody JsonNode payload) {
+        Resource r = new Resource();
+        r.setResourceCategory(payload.get("resourceCategory").textValue());
+        r.setName(payload.get("name").textValue());
+        r.setDescription(payload.get("description").textValue());
+        r.setImage(payload.get("image").textValue());
+        r.setModelNumber(payload.get("modelNumber").textValue());
+        r.setBorrowPrice(Float.parseFloat(payload.get("borrowPrice").textValue()));
+        r.setSalePrice(Float.parseFloat(payload.get("salePrice").textValue()));
+        resourcerepository.save(r);
+        return "Added Resource";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/add/item")
+    public @ResponseBody String addNewItem (@RequestBody JsonNode payload) {
+        Resource r = resourcerepository.findById(payload.get("resourceId").asInt()).get();
+        Item i = new Item();
+        i.setResource(r);
+        i.setItemType(payload.get("itemType").textValue());
+        i.setSerialNumber(payload.get("serialNumber").textValue());
+        i.setAvailable(true);
+        itemRepository.save(i);
+        return "Added Item";
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -62,81 +89,22 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/get/borrow")
+    @PostMapping(path="/get/borrow")
     public @ResponseBody int getAvailBorrow(@RequestBody JsonNode payload) {
-        Resource resource = resourcerepository.findById(payload.get("resource_id").asInt()).get();
-        return itemRepository.countItems(resource, ItemType.BORROW, true);
+        return itemRepository.countItems(payload.get("resource_id").asInt(), 1, true);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path="/get/sale")
     public @ResponseBody int getAvailPurchase(@RequestBody JsonNode payload) {
-        Resource resource = resourcerepository.findById(payload.get("resource_id").asInt()).get();
-        return itemRepository.countItems(resource, ItemType.SALE, true);
+        return itemRepository.countItems(payload.get("resource_id").asInt(),0, true);
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @PostMapping(path="items/add")
-//    public @ResponseBody String addNewItem(@RequestBody JsonNode payload) {
-//        Inventory newItem = new Inventory();
-//        newItem.setName(payload.get("name").textValue());
-//        newItem.setModel(payload.get("model").textValue());
-//        newItem.setPrice(Integer.parseInt(payload.get("price").textValue()));
-//        newItem.setStock(Integer.parseInt(payload.get("stock").textValue()));
-//        newItem.setImage(payload.get("image").textValue());
-//        newItem.setType(payload.get("type").textValue());
-//        inventoryRepository.save(newItem);
-//        return "Saved";
-//    }
-
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/add/resource") // Map ONLY POST Requests
-    public @ResponseBody String addNewResource (@RequestBody JsonNode payload)
-    {
-        Resource r = new Resource();
-        r.setResourcecategory(payload.get("resourcecategory").textValue());
-        r.setName(payload.get("name").textValue());
-        r.setImage(payload.get("image").textValue());
-        r.setModel(payload.get("model").textValue());
-        r.setBorrowPrice(Float.parseFloat(payload.get("borrowPrice").textValue()));
-        r.setSalePrice(Float.parseFloat(payload.get("salePrice").textValue()));
-        r.setDescription(payload.get("desc").textValue());
-        resourcerepository.save(r);
-        return "Saved resource";
-    }
-    @PostMapping(path="/add/item") // Map ONLY POST Requests
-    public @ResponseBody String addNewItem (@RequestBody JsonNode payload)
-    {
-        Resource jank = resourcerepository.findById(1).get();
-        Item i = new Item();
-        i.setResource(jank);
-        i.setAvailable(true);
-        i.setItemtype(ItemType.SALE);
-        i.setTransactionPrice(49.99F);
-        i.setUsername("");
-        i.setTransactionTime(LocalDateTime.now());
-        i.setSerialNumber("");
-        itemRepository.save(i);
-        return "Saved item";
-    }
-
-
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/add/funds")
-    public @ResponseBody String addFunds (@RequestBody JsonNode payload) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(payload.get("username").textValue()).get();
-        user.setAvailableFunds( user.getAvailableFunds() + payload.get("funds").floatValue() );
-
-        return "success message";
-    }
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public class ForbiddenException extends RuntimeException {}
 
     @GetMapping(path="/confirm")
-    public @ResponseBody String isAdmin (HttpServletRequest request)
-    {
+    public @ResponseBody String isAdmin (HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
         if(user != null) {
             if ((user.getRole()) == Role.valueOf("ADMIN")) {
@@ -146,7 +114,6 @@ public class MainController {
         throw new ForbiddenException();
 
     }
-
 
     /*
     public List<Item> getBorrowedItems(String username) throws ResourceNotFoundException {

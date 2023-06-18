@@ -14,7 +14,7 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resourceId", nullable = false)
     private Resource resource;
-    private ItemType itemtype;
+    private ItemType itemType;
     private String serialNumber, username;
     private boolean isAvailable;
     private LocalDateTime TransactionTime;
@@ -37,12 +37,12 @@ public class Item {
         this.resource = resource;
     }
 
-    public ItemType getItemtype() {
-        return itemtype;
+    public ItemType getItemType() {
+        return itemType;
     }
 
-    public void setItemtype(ItemType itemtype) {
-        this.itemtype = itemtype;
+    public void setItemType(String itemType) {
+        this.itemType = ItemType.valueOf(itemType);
     }
 
     public String getSerialNumber() {
