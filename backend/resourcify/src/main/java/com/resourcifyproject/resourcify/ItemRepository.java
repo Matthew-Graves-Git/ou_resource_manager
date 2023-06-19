@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Integer> {
+public interface ItemRepository extends JpaRepository<Item, Integer> { // No underscore for item_type  but it still works?
     @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM ITEM WHERE resource_id = ?1 AND itemtype = ?2  AND is_available = ?3 ")
     int countItems(Integer resource_id,Integer itemType, boolean isAvailable);
 

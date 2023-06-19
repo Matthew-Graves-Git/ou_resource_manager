@@ -59,13 +59,13 @@ public class MainController {
     @PostMapping(path="/add/resource")
     public @ResponseBody String addNewResource (@RequestBody JsonNode payload) {
         Resource r = new Resource();
-        r.setResourceCategory(payload.get("resourceCategory").textValue());
+        r.setResourceCategory(payload.get("resource_category").textValue());
         r.setName(payload.get("name").textValue());
         r.setDescription(payload.get("description").textValue());
         r.setImage(payload.get("image").textValue());
-        r.setModelNumber(payload.get("modelNumber").textValue());
-        r.setBorrowPrice(Float.parseFloat(payload.get("borrowPrice").textValue()));
-        r.setSalePrice(Float.parseFloat(payload.get("salePrice").textValue()));
+        r.setModelNumber(payload.get("model_number").textValue());
+        r.setBorrowPrice(Float.parseFloat(payload.get("borrow_price").textValue()));
+        r.setSalePrice(Float.parseFloat(payload.get("sale_price").textValue()));
         resourcerepository.save(r);
         return "Added Resource";
     }
@@ -73,11 +73,11 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/item")
     public @ResponseBody String addNewItem (@RequestBody JsonNode payload) {
-        Resource r = resourcerepository.findById(payload.get("resourceId").asInt()).get();
+        Resource r = resourcerepository.findById(payload.get("resource_id").asInt()).get();
         Item i = new Item();
         i.setResource(r);
-        i.setItemType(payload.get("itemType").textValue());
-        i.setSerialNumber(payload.get("serialNumber").textValue());
+        i.setItemType(payload.get("item_type").textValue());
+        i.setSerialNumber(payload.get("serial_number").textValue());
         i.setAvailable(true);
         itemRepository.save(i);
         return "Added Item";
@@ -86,7 +86,7 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResources(@RequestBody JsonNode payload) {
-        return resourcerepository.findByResourceCategory(ResourceCategory.valueOf(payload.get("resourceCategory").textValue())).get();
+        return resourcerepository.findByResourceCategory(payload.get("resource_category").asInt()).get();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -103,7 +103,7 @@ public class MainController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/user/purchased")
-    public List<Item> getPurchasedItems(HttpServletRequest request) throws ResourceNotFoundException {
+    public @ResponseBody List<Item> getPurchasedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
         List<Item> purchasedItems = itemRepository.getItemsByUsername(user.getUsername(), 0);
         if(purchasedItems.isEmpty()){
@@ -114,13 +114,32 @@ public class MainController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/user/borrowed")
-    public List<Item> getBorrowedItems(HttpServletRequest request) throws ResourceNotFoundException {
+    public @ResponseBody List<Item> getBorrowedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
         List<Item> borrowedItems = itemRepository.getItemsByUsername(user.getUsername(), 1);
         if(borrowedItems.isEmpty()){
             throw new ResourceNotFoundException("You are not currently borrowing any items!");
         }
         return borrowedItems;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/get/user/")
+    public @ResponseBody User getUser(HttpServletRequest request) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        return user;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/cart/")
+    public @ResponseBody String setCart(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        List<String> cart = new ArrayList<String>();
+        for (JsonNode item : payload) {
+            cart.add(item.asText());
+        }
+        user.setCart(cart);
+        return "Cart Updated!";
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -158,7 +177,7 @@ public class MainController {
         itemToBorrow.setUsername(user.getUsername());
         itemToBorrow.setTransactionPrice(resource.getBorrowPrice());
         itemToBorrow.setTransactionTime(LocalDateTime.now());
-        itemToBorrow.setBorrowTime(payload.get("borrowTime").asLong());
+        itemToBorrow.setBorrowTime(payload.get("borrow_time").asLong());
         return "Borrow Successful!";
     }
 

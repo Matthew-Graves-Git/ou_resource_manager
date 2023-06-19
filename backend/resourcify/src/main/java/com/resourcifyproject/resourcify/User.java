@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@SecondaryTable(name="cart", pkJoinColumns = @PrimaryKeyJoinColumn(name = "userCart_Id"))
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -14,11 +13,16 @@ public class User {
     private Role role;
     private String username, password, lastname, firstname;
     private float availableFunds = 0;
-    //private List<Resource> cart;   FIX THIS ERROR
+    @ElementCollection
+    private List<String> cart;
 
     public Integer getId() {
         return id;
     }   //no setter for ID, it is permanent after being generated
+
+    public List<String> getCart() { return cart; }
+
+    public void setCart(List<String> cart) { this.cart = cart; }
 
     public String getUsername() {
         return username;

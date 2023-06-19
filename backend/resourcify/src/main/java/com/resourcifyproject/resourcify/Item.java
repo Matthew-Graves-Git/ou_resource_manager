@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-@SecondaryTable(name="cart", pkJoinColumns = @PrimaryKeyJoinColumn(name = "item_Id"))
 public class Item {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
