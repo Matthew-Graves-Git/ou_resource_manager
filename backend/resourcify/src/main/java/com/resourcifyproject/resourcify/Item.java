@@ -9,10 +9,12 @@ public class Item {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "item_Id")
     private Integer itemId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_id", nullable = false)
     private Resource resource;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="item_type")
     private ItemType itemType;
     private String serialNumber, username;
     private boolean isAvailable;
@@ -22,11 +24,7 @@ public class Item {
 
     public Integer getItemId() {
         return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
+    } //no setter for ID
 
     public Resource getResource() {
         return resource;

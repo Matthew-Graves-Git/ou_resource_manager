@@ -38,12 +38,9 @@ public class MainController {
         User n = new User();
         n.setRole(payload.get("role").textValue());
         n.setUsername(payload.get("username").textValue());
-        n.setPassword(payload.get("password").textValue());
-        n.setPassword(passwordEncoder.encode(n.getPassword()));
+        n.setPassword(passwordEncoder.encode(payload.get("password").textValue()));
         n.setLastname(payload.get("lastname").textValue());
         n.setFirstname(payload.get("firstname").textValue());
-        List<String> cart = Arrays.asList("Hello");
-        n.setCart(cart);
         userRepository.save(n);
         return "Saved";
     }
@@ -102,20 +99,20 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/sale")
     public @ResponseBody int getAvailPurchase(@RequestBody JsonNode payload) {
-        return itemRepository.countItems(payload.get("resource_id").asInt(),0, true);
+        return itemRepository.countItems(payload.get("resource_id").asText(), payload.get("item_type").asText(), true);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/borrow")
     public @ResponseBody int getAvailBorrow(@RequestBody JsonNode payload) {
-        return itemRepository.countItems(payload.get("resource_id").asInt(), 1, true);
+        return itemRepository.countItems(payload.get("resource_id").asText(), payload.get("item_type").asText(), true);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/user/purchased")
     public @ResponseBody List<Item> getPurchasedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
-        List<Item> purchasedItems = itemRepository.getItemsByUsername(user.getUsername(), 0);
+        List<Item> purchasedItems = itemRepository.getItemsByUsername(user.getUsername(), "SALE");
         if(purchasedItems.isEmpty()){
             throw new ResourceNotFoundException("You have not purchased any items!");
         }
@@ -126,7 +123,7 @@ public class MainController {
     @PostMapping(path="/get/user/borrowed")
     public @ResponseBody List<Item> getBorrowedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
-        List<Item> borrowedItems = itemRepository.getItemsByUsername(user.getUsername(), 1);
+        List<Item> borrowedItems = itemRepository.getItemsByUsername(user.getUsername(), "BORROW");
         if(borrowedItems.isEmpty()){
             throw new ResourceNotFoundException("You are not currently borrowing any items!");
         }
@@ -156,14 +153,14 @@ public class MainController {
     @PostMapping(path="/do/purchase")
     public @ResponseBody String doPurchase(HttpServletRequest request, @RequestBody JsonNode payload) {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
-        Resource resource = resourcerepository.findById(payload.get("resource_id").asInt()).get();
+        Resource resource = resourcerepository.findById(payload.get("resource_id").asText()).get();
         if ( user.getAvailableFunds() < resource.getSalePrice() ) {
             throw new ForbiddenException(); //They don't have enough money
         }
-        if ( itemRepository.countItems(payload.get("resource_id").asInt(),0, true) < 1 ) {
+        if ( itemRepository.countItems(payload.get("resource_id").asText(),payload.get("item_type").asText(), true) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to purchase
         }
-        Item itemToPurchase = itemRepository.getItemForTransaction(payload.get("resource_id").asInt(),0, true);
+        Item itemToPurchase = itemRepository.getItemForTransaction(payload.get("resource_id").asText(), payload.get("item_type").asText(), true);
         itemToPurchase.setAvailable(false);
         itemToPurchase.setUsername(user.getUsername());
         itemToPurchase.setTransactionPrice(resource.getSalePrice());
@@ -179,10 +176,10 @@ public class MainController {
         if ( user.getAvailableFunds() < resource.getBorrowPrice() ) {
             throw new ForbiddenException(); //They don't have enough money
         }
-        if ( itemRepository.countItems(payload.get("resource_id").asInt(),1, true) < 1 ) {
+        if ( itemRepository.countItems(payload.get("resource_id").asText(),payload.get("item_type").asText(), true) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to borrow
         }
-        Item itemToBorrow = itemRepository.getItemForTransaction(payload.get("resource_id").asInt(),0, true);
+        Item itemToBorrow = itemRepository.getItemForTransaction(payload.get("resource_id").asText(), payload.get("item_type").asText(), true);
         itemToBorrow.setAvailable(false);
         itemToBorrow.setUsername(user.getUsername());
         itemToBorrow.setTransactionPrice(resource.getBorrowPrice());

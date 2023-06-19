@@ -1,7 +1,6 @@
 package com.resourcifyproject.resourcify;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,60 +9,35 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name="user_id")
     private Integer id;
     private Role role;
     private String username, password, lastname, firstname;
     private float availableFunds = 0;
     @ElementCollection
-    private List<String> cart;
+    private List<String> cart = new ArrayList<>();
 
-    public Integer getId() {
-        return id;
-    }   //no setter for ID, it is permanent after being generated
+    public Integer getId() { return id; }   //no setter for ID
 
-    public List<String> getCart() { return cart; }
+    public String getUsername() { return username; }
 
-    public void setCart(List<String> cart) { this.cart = cart; }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getPassword() { return password; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setPassword(String password) { this.password = password; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getLastname() { return lastname; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
-    public String getLastname() {
-        return lastname;
-    }
+    public String getFirstname() { return firstname; }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public void setFirstname(String firstName) { this.firstname = firstname; }
 
-    public String getFirstname() {
-        return firstname;
-    }
+    public float getAvailableFunds() { return availableFunds; }
 
-    public void setFirstname(String firstName) {
-        this.firstname = firstname;
-    }
-
-    public float getAvailableFunds() {
-        return availableFunds;
-    }
-
-    public void setAvailableFunds(float availablefunds) {
-        this.availableFunds = availablefunds;
-    }
+    public void setAvailableFunds(float availableFunds) { this.availableFunds = availableFunds; }
 
     public Role getRole() {
         return role;
@@ -72,4 +46,8 @@ public class User {
     public void setRole(String role) {
         this.role = Role.valueOf(role);
     }
+
+    public List<String> getCart() { return cart; }
+
+    public void setCart(List<String> cart) { this.cart = cart; }
 }

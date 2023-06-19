@@ -9,14 +9,16 @@ public class Resource {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="resource_id")
     private Integer resourceId;
+
     @Enumerated(EnumType.STRING)
+    @Column(name="resource_category")
     private ResourceCategory resourceCategory;
     private String name, description, image, modelNumber;
     private float salePrice, borrowPrice;
 
     public Integer getResourceId() {
         return resourceId;
-    }
+    } //no setter for ID
 
     public ResourceCategory getResourceCategory() {
         return resourceCategory;
