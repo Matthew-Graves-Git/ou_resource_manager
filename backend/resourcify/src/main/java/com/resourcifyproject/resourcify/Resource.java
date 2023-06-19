@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Resource {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="resource_id")
     private Integer resourceId;
     @Enumerated(EnumType.STRING)
     private ResourceCategory resourceCategory;

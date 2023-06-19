@@ -11,7 +11,7 @@ public class Item {
     private Integer itemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resourceId", nullable = false)
+    @JoinColumn(name = "resource_id", nullable = false)
     private Resource resource;
     private ItemType itemType;
     private String serialNumber, username;
