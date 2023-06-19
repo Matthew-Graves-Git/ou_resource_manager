@@ -86,7 +86,7 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResources(@RequestBody JsonNode payload) {
-        return resourcerepository.findByResourceCategory(payload.get("resource_category").asInt()).get();
+        return resourcerepository.findByResourceCategory(payload.get("resource_category").asText()).get();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
