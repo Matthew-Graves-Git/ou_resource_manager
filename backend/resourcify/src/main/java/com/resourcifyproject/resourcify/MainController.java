@@ -3,6 +3,7 @@ package com.resourcifyproject.resourcify;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -83,9 +84,15 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/get/all")
-    public @ResponseBody List<Resource> getAllResources() {
-        return resourcerepository.findAll();
+    @PostMapping(path="/get/resource")
+    public @ResponseBody List<Resource> getResources(@RequestBody JsonNode payload) {
+        return resourcerepository.findByResourceCategory(ResourceCategory.valueOf(payload.get("resourceCategory").textValue())).get();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/get/sale")
+    public @ResponseBody int getAvailPurchase(@RequestBody JsonNode payload) {
+        return itemRepository.countItems(payload.get("resource_id").asInt(),0, true);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -95,9 +102,74 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/get/sale")
-    public @ResponseBody int getAvailPurchase(@RequestBody JsonNode payload) {
-        return itemRepository.countItems(payload.get("resource_id").asInt(),0, true);
+    @PostMapping(path="/get/user/purchased")
+    public List<Item> getPurchasedItems(HttpServletRequest request) throws ResourceNotFoundException {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        List<Item> purchasedItems = itemRepository.getItemsByUsername(user.getUsername(), 0);
+        if(purchasedItems.isEmpty()){
+            throw new ResourceNotFoundException("You have not purchased any items!");
+        }
+        return purchasedItems;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/get/user/borrowed")
+    public List<Item> getBorrowedItems(HttpServletRequest request) throws ResourceNotFoundException {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        List<Item> borrowedItems = itemRepository.getItemsByUsername(user.getUsername(), 1);
+        if(borrowedItems.isEmpty()){
+            throw new ResourceNotFoundException("You are not currently borrowing any items!");
+        }
+        return borrowedItems;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/purchase")
+    public @ResponseBody String doPurchase(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        Resource resource = resourcerepository.findById(payload.get("resource_id").asInt()).get();
+        if ( user.getAvailableFunds() < resource.getSalePrice() ) {
+            throw new ForbiddenException(); //They don't have enough money
+        }
+        if ( itemRepository.countItems(payload.get("resource_id").asInt(),0, true) < 1 ) {
+            throw new ArithmeticException(); //There is not an item available to purchase
+        }
+        Item itemToPurchase = itemRepository.getItemForTransaction(payload.get("resource_id").asInt(),0, true);
+        itemToPurchase.setAvailable(false);
+        itemToPurchase.setUsername(user.getUsername());
+        itemToPurchase.setTransactionPrice(resource.getSalePrice());
+        itemToPurchase.setTransactionTime(LocalDateTime.now());
+        return "Purchase Successful!";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/borrow")
+    public @ResponseBody String doBorrow(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        Resource resource = resourcerepository.findById(payload.get("resource_id").asInt()).get();
+        if ( user.getAvailableFunds() < resource.getBorrowPrice() ) {
+            throw new ForbiddenException(); //They don't have enough money
+        }
+        if ( itemRepository.countItems(payload.get("resource_id").asInt(),1, true) < 1 ) {
+            throw new ArithmeticException(); //There is not an item available to borrow
+        }
+        Item itemToBorrow = itemRepository.getItemForTransaction(payload.get("resource_id").asInt(),0, true);
+        itemToBorrow.setAvailable(false);
+        itemToBorrow.setUsername(user.getUsername());
+        itemToBorrow.setTransactionPrice(resource.getBorrowPrice());
+        itemToBorrow.setTransactionTime(LocalDateTime.now());
+        itemToBorrow.setBorrowTime(payload.get("borrowTime").asLong());
+        return "Borrow Successful!";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/return")
+    public @ResponseBody String doReturn(@RequestBody JsonNode payload) {
+        Item item = itemRepository.findById(payload.get("item_id").asInt()).get();
+        item.setTransactionTime(null);
+        item.setTransactionPrice(null);
+        item.setBorrowTime(null);
+        return "Return Successful!";
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -112,24 +184,5 @@ public class MainController {
             }
         }
         throw new ForbiddenException();
-
     }
-
-    /*
-    public List<Item> getBorrowedItems(String username) throws ResourceNotFoundException {
-        List<Item> borrowedItems = itemRepository.findByUsernameAndItemtype(username, ItemType.BORROW);
-        if(borrowedItems.isEmpty()){
-            throw new ResourceNotFoundException("You are not currently borrowing any items!");
-        }
-        return borrowedItems;
-    }
-
-    public List<Item> getPurchasedItems(String username) throws ResourceNotFoundException {
-        List<Item> purchasedItems = itemRepository.findByUsernameAndItemtype(username, ItemType.SALE);
-        if(purchasedItems.isEmpty()){
-            throw new ResourceNotFoundException("You have not purchased any items!");
-        }
-        return purchasedItems;
-    }
-    */
 }

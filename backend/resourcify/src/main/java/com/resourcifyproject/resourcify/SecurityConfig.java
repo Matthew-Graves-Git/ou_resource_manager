@@ -38,8 +38,8 @@ public class SecurityConfig {
                         //.requestMatchers("/demo/login").permitAll()    For implementing custom login page ?
                         .requestMatchers("/demo/add/**").permitAll()
                         .requestMatchers("/demo/get/**").permitAll()
+                        .requestMatchers("/demo/do/**").permitAll()
                         .requestMatchers("/demo/confirm").permitAll()
-                        .requestMatchers("/demo/items/**").permitAll()
                         .requestMatchers("/demo/all")
                         .authenticated()
 

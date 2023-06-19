@@ -18,8 +18,8 @@ public class Item {
     private String serialNumber, username;
     private boolean isAvailable;
     private LocalDateTime TransactionTime;
-    private float TransactionPrice;
-    private long borrowTime;
+    private Float TransactionPrice;
+    private Long borrowTime;
 
     public Integer getItemId() {
         return itemId;
@@ -78,19 +78,19 @@ public class Item {
         TransactionTime = transactionTime;
     }
 
-    public float getTransactionPrice() {
+    public Float getTransactionPrice() {
         return TransactionPrice;
     }
 
-    public void setTransactionPrice(float transactionPrice) {
+    public void setTransactionPrice(Float transactionPrice) {
         TransactionPrice = transactionPrice;
     }
 
-    public long getBorrowTime() {
+    public Long getBorrowTime() {
         return borrowTime;
     }
 
-    public void setBorrowTime(long borrowTime) {
+    public void setBorrowTime(Long borrowTime) {
         this.borrowTime = borrowTime;
     }
 }
