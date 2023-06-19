@@ -11,13 +11,26 @@ public class User {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name="user_id")
     private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="role")
     private Role role;
-    private String username, password, lastname, firstname;
-    private float availableFunds = 0;
+
     @ElementCollection
     private List<String> cart = new ArrayList<>();
 
+    private String username, password, lastname, firstname;
+    private float availableFunds = 0;
+
     public Integer getId() { return id; }   //no setter for ID
+
+    public Role getRole() { return role; }
+
+    public void setRole(String role) { this.role = Role.valueOf(role); }
+
+    public List<String> getCart() { return cart; }
+
+    public void setCart(List<String> cart) { this.cart = cart; }
 
     public String getUsername() { return username; }
 
@@ -38,16 +51,4 @@ public class User {
     public float getAvailableFunds() { return availableFunds; }
 
     public void setAvailableFunds(float availableFunds) { this.availableFunds = availableFunds; }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
-    }
-
-    public List<String> getCart() { return cart; }
-
-    public void setCart(List<String> cart) { this.cart = cart; }
 }

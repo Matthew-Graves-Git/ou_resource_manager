@@ -13,12 +13,11 @@ public class Resource {
     @Enumerated(EnumType.STRING)
     @Column(name="resource_category")
     private ResourceCategory resourceCategory;
+
     private String name, description, image, modelNumber;
     private float salePrice, borrowPrice;
 
-    public Integer getResourceId() {
-        return resourceId;
-    } //no setter for ID
+    public Integer getResourceId() { return resourceId; } //no setter for ID
 
     public ResourceCategory getResourceCategory() {
         return resourceCategory;

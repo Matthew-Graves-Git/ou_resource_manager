@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 public class Item {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "item_Id")
+    @Column(name = "item_id")
     private Integer itemId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_id", nullable = false)
     private Resource resource;
@@ -16,15 +17,14 @@ public class Item {
     @Enumerated(EnumType.STRING)
     @Column(name="item_type")
     private ItemType itemType;
+
     private String serialNumber, username;
     private boolean isAvailable;
     private LocalDateTime TransactionTime;
     private Float TransactionPrice;
     private Long borrowTime;
 
-    public Integer getItemId() {
-        return itemId;
-    } //no setter for ID
+    public Integer getItemId() { return itemId; } //no setter for ID
 
     public Resource getResource() {
         return resource;
