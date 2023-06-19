@@ -41,7 +41,25 @@ const filterResources = (all) =>{
   (item.role !== "LAPTOP")
   )))
 }
+
+function postAll(array, cat){
+  array.forEach(async element => {
+      await ResourcifyApi.createAll(
+      {
+          ...element,
+          resourcecategory:cat,
+          salePrice:"199.00",
+          desc:""
+      }
+      )
+  });
+}
+
 useEffect( () => {
+  postAll(tablets,"TABLET")
+  postAll(laptops,"LAPTOP")
+  postAll(accesorie,"CALCULATOR")
+  postAll(pc,"DESKTOP")
   const all = [];
   async function getResourceQty(id){
     const stock = await ResourcifyApi.getQty(id);

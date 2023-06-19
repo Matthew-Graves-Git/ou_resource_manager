@@ -7,7 +7,8 @@ export const ResourcifyApi = {
   basicAuth,
   IsAdmin,
   getAllItems,
-  getQty
+  getQty,
+  createAll
 }
 
 function authenticate(username, password) {
@@ -81,6 +82,17 @@ function signup(firstName, lastName,username, password) {
           port: 8080,
       },
     })
+}
+
+function createAll(body) {
+  return instance.post('demo/add/resource', body, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
 }
 
 
