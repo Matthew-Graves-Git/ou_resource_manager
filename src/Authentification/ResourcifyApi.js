@@ -38,8 +38,8 @@ function IsAdmin() {
   })
 }
 
-function getAllItems() {
-  return instance.get('/demo/get/all', {
+function getAllItems(category) {
+  return instance.post('/demo/get/resource', category, {
     headers: {"Access-Control-Allow-Origin": '*'},
       proxy: {
           protocol: 'http',

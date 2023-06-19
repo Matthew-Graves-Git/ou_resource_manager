@@ -56,31 +56,45 @@ function postAll(array, cat){
 }
 
 useEffect( () => {
-postAll(laptop,"LAPTOP")
-  // const all = [];
-  // async function getResourceQty(id){
-  //   const stock = await ResourcifyApi.getQty(id);
-  //   return stock.data;
-  // }
-  // async function getResources(){
-  //   const resources = await ResourcifyApi.getAllItems();
-  //   if(resources){
-  //     resources.data.forEach( async (item) => {
-  //       const stock = await getResourceQty(item.resourceId)
-  //       all.push({
-  //         name: item.name,
-  //         model: item.modelNumber,
-  //         price: item.salePrice,
-  //         stock: stock,
-  //         image: images[item.image],
-  //         role: item.resourcecategory
-  //       })
-  //     });
-  //     filterResources(all)
-  //   }
-  //   setItems(all);
-  // }
-  // getResources();
+  const all = [];
+  async function getResourceQty(id){
+    const stock = await ResourcifyApi.getQty(id);
+    return stock.data;
+  }
+  async function getResources(category){
+    const resources = await ResourcifyApi.getAllItems({resource_category:"LAPTOP"});
+    if(resources){
+      resources.data.forEach( async (item) => {
+        const stock = await getResourceQty(item.resourceId)
+        all.push({
+          name: item.name,
+          model: item.modelNumber,
+          price: item.salePrice,
+          stock: stock,
+          image: images[item.image],
+          role: item.resourceCategory
+        })
+      });
+      filterResources(all)
+    }
+    if(category === 'all'){
+      setItems(all);
+    }else if(category === 'pc'){
+      setpcs(all)
+    }else if(category === 'acc'){
+      setaccesories(all)
+    }else if(category === 'tab'){
+      settablet(all)
+    }else if(category === 'lap'){
+      setlaptops(all)
+    }
+  }
+  getResources('all');
+  getResources('pc');
+  getResources('acc');
+  getResources('tab');
+  getResources('lap');
+  
 }, [] );
 
 const handleRent = (model,category) =>{

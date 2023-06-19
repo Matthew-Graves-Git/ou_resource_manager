@@ -5,7 +5,9 @@ import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 
 
 const Home = (props) => {
-    
+  
+  
+  
 
   return (
     <div className='hole'>

@@ -42,6 +42,8 @@ public class MainController {
         n.setPassword(passwordEncoder.encode(n.getPassword()));
         n.setLastname(payload.get("lastname").textValue());
         n.setFirstname(payload.get("firstname").textValue());
+        List<String> cart = Arrays.asList("Hello");
+        n.setCart(cart);
         userRepository.save(n);
         return "Saved";
     }
@@ -85,8 +87,16 @@ public class MainController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/resource")
-    public @ResponseBody List<Resource> getResources(@RequestBody JsonNode payload) {
-        return resourcerepository.findByResourceCategory(payload.get("resource_category").asText()).get();
+    public @ResponseBody List<Resource> getResources(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        return resourcerepository.getResourcesExceptCart(payload.get("resource_category").asText(), user.getCart()).get();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(path="/get/cart")
+    public @ResponseBody List<Resource> getCart(HttpServletRequest request) {
+        User user = userRepository.findByUsername(request.getRemoteUser()).get();
+        return resourcerepository.getResourcesCart(user.getCart()).get();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -124,14 +134,14 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/user/")
+    @PostMapping(path="/get/user")
     public @ResponseBody User getUser(HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
         return user;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/do/cart/")
+    @PostMapping(path="/do/cart")
     public @ResponseBody String setCart(HttpServletRequest request, @RequestBody JsonNode payload) {
         User user = userRepository.findByUsername(request.getRemoteUser()).get();
         List<String> cart = new ArrayList<String>();
