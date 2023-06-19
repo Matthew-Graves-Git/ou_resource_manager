@@ -47,19 +47,16 @@ function postAll(array, cat){
       await ResourcifyApi.createAll(
       {
           ...element,
-          resourcecategory:cat,
-          salePrice:"199.00",
-          desc:""
+          resource_category:cat,
+          sale_price:"199.00",
+          description:""
       }
       )
   });
 }
 
 useEffect( () => {
-  postAll(tablets,"TABLET")
-  postAll(laptops,"LAPTOP")
-  postAll(accesorie,"CALCULATOR")
-  postAll(pc,"DESKTOP")
+
   const all = [];
   async function getResourceQty(id){
     const stock = await ResourcifyApi.getQty(id);
@@ -72,7 +69,7 @@ useEffect( () => {
         const stock = await getResourceQty(item.resourceId)
         all.push({
           name: item.name,
-          model: item.model,
+          model: item.modelNumber,
           price: item.salePrice,
           stock: stock,
           image: images[item.image],
