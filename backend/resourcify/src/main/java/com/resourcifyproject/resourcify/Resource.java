@@ -14,6 +14,7 @@ public class Resource {
     @Column(name="resource_category")
     private ResourceCategory resourceCategory;
 
+    private int quantityBorrow = 0, quantitySale = 0;
     private String name, description, image, modelNumber;
     private float salePrice, borrowPrice;
 
@@ -25,6 +26,14 @@ public class Resource {
     public void setResourceCategory(String resourceCategory) {
         this.resourceCategory = ResourceCategory.valueOf(resourceCategory);
     }
+
+    public int getQuantityBorrow() { return quantityBorrow; }
+
+    public void setQuantityBorrow(int quantityBorrow) { this.quantityBorrow = quantityBorrow; }
+
+    public int getQuantitySale() { return quantitySale; }
+
+    public void setQuantitySale(int quantitySale) { this.quantitySale = quantitySale; }
 
     public String getName() { return name; }
 
