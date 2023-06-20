@@ -1,4 +1,4 @@
-.navbar{
+/* .navbar{
     background-color: #877148;
     overflow: hidden;
 }
@@ -13,6 +13,49 @@
 }
 
 .navbar img{
+    float: right;
+    height: 20px;
+    border-left: #f2f2f2 2px;
+} */
+
+header {
+  background-color: transparent;
+}
+
+nav {
+  height: 80px;
+  padding: 20px;
+}
+
+.logo {
+  padding: 10px;
+  width: auto;
+  float: left;
+}
+
+.logo img {
+  height: 55px;
+}
+
+.menu-item {
+  float: right;
+  margin-right: 25px;
+  margin-top: 17px;
+}
+
+.menu-item li {
+  float: left;
+  padding: 13px 13px;
+  font-size: 18px;
+  font-weight: 500;
+  list-style: none;
+}
+
+.menu-item li a {
+  text-decoration: none;
+}
+
+nav img{
     float: right;
     height: 20px;
     border-left: #f2f2f2 2px;
