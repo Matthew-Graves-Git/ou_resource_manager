@@ -73,7 +73,6 @@ const CreateResource = () => {
                 <option value="week">1 week</option>
                 <option value="twoWeek">2 weeks</option>
                 <option value="month">1 month</option>
-                <option value="semester">1 semester</option>
             </select>
             <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
                 <option value="laptop">laptop</option>

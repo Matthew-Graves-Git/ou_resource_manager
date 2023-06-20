@@ -6,6 +6,9 @@ import placeholder from '../Images/placeholder-image.png';
 import {Link} from 'react-router-dom';
 
 const Product = (props) => {
+
+
+  
   return (
     <div className='content'>
       <h1>All Products</h1>

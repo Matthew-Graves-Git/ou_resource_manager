@@ -20,6 +20,7 @@ const NavBar = () => {
               <li><Link to="/Accesories">Accessories</Link></li>
               <li><Link to="/Cart">Cart</Link></li>
               {/* <li><Link to="/Cart"><img alt='cart' src={cart}/></Link></li> */}
+              <li><Link to="/Funds">Add Funds</Link></li>
               <li>{IsAdmin()}</li>
               <li><Link to="/Logout">Logout</Link></li>
             </ul>

@@ -16,6 +16,7 @@ import Tablet from './Pages/Tablet';
 import SignUp from './Pages/SignUp';
 import CreateResource from './Pages/Admin/CreateResource';
 import { ResourcifyApi } from './Authentification/ResourcifyApi';
+import AddFunds from './Pages/Admin/AddFunds';
 
 function App() {
   function importAll(r) {
@@ -43,84 +44,57 @@ const filterResources = (all) =>{
   )))
 }
 
-function postAll(array, cat){
-  array.forEach(async element => {
-      await ResourcifyApi.createAll(
-      {
-          ...element,
-          resource_category:cat,
-          sale_price:"199.00",
-          description:""
-      }
-      )
-  });
-}
+// function postAll(array, cat){
+//   array.forEach(async element => {
+//       await ResourcifyApi.createAll(
+//       {
+//           ...element,
+//           resource_category:cat,
+//           sale_price:"199.00",
+//           description:""
+//       }
+//       )
+//   });
+// }
 
-useEffect( () => {
-  //postAll(laptops,"LAPTOP")
-  //postAll(pc,"DESKTOP")
-  // postAll(tablets,"TABLET")
-  // postAll(accesorie,"CALCULATOR")
-  const all = [];
-  async function getResourceQty(id){
-    const stock = await ResourcifyApi.getQty(id);
-    return stock.data;
-  }
-  async function getResources(category){
-    const resources = await ResourcifyApi.getAllItems({resource_category:category});
-    if(resources){
-      resources.data.forEach( async (item) => {
-        //const stock = await getResourceQty(item.resourceId)
-        all.push({
-          name: item.name,
-          model: item.modelNumber,
-          price: item.borrowPrice,
-          stock: 1,
-          image: images[item.image],
-          role: item.resourceCategory
-        })
-      });
-      filterResources(all)
-    }
-    if(category === 'LAPTOP'){
-      setlaptops(all);
-    }else if(category === 'DESKTOP'){
-      setpcs(all)
-    }else if(category === 'CALCULATOR'){
-      setaccesories(all)
-    }else if(category === 'TABLET'){
-      setItems(all);
-    }else{
-      settablet(all)
-    }
-  }
-   getResources('LAPTOP');
-   getResources('DESKTOP');
-   getResources('CALCULATOR');
-   getResources('TABLET');
+// useEffect( () => {
+//   //postAll(laptops,"LAPTOP")
+//   //postAll(pc,"DESKTOP")
+//   // postAll(tablets,"TABLET")
+//   // postAll(accesorie,"CALCULATOR")
+//   const all = [];
+//   async function getResourceQty(id){
+//     const stock = await ResourcifyApi.getQty(id);
+//     return stock.data;
+//   }
+//   async function getResources(category){
+//     const resources = await ResourcifyApi.getAllItems({resource_category:category});
+//     if(resources){
+//       resources.data.forEach( async (item) => {
+//         //const stock = await getResourceQty(item.resourceId)
+//         all.push({
+//           name: item.name,
+//           model: item.modelNumber,
+//           price: item.borrowPrice,
+//           stock: 1,
+//           image: images[item.image],
+//           role: [item.resourceId,item.resourceCategory]
+//         })
+//       });
+//       setItems(all);
+//     }
+//   }
+//    getResources('LAPTOP');
+//    getResources('DESKTOP');
+//    getResources('CALCULATOR');
+//    getResources('TABLET');
+//    setItems(all);
   
-}, [] );
+// }, [] );
 
-const handleRent = (model,category) =>{
-    let temp= []
-
-  if(category === 'all'){
-    temp = items;
-  }else if(category === 'pc'){
-    temp = pcs;
-  }else if(category === 'acc'){
-    temp = accesories;
-  }else if(category === 'tab'){
-    temp = tablet;
-  }else if(category === 'lap'){
-    temp = laptops;
-  }
-  console.log("got to", category);
-  const t2 = cart.slice();
-  const t3 = temp.filter(item => item.model === model);
-  addToTotal(parseInt(t3[0].price));
-  t2.push(t3[0]);
-  setCart(t2);
+const handleRent = async (role,model,category) =>{
+  const [id,cat] = role;
+  const res = await ResourcifyApi.addToCart(id);
   
 }
 
@@ -175,6 +149,7 @@ window.onbeforeunload = function() {
               <Route exact path='/Tablets' element={<SecureRoute><Tablet assets={propT}/></SecureRoute>} />
               <Route exact path='/Laptops' element={<SecureRoute><Laptop assets={propL}/></SecureRoute>} />
               <Route exact path='/Cart' element={<SecureRoute><Cart assets={cartProps}/></SecureRoute>} />
+              <Route exact path='/Funds' element={<SecureRoute><AddFunds/></SecureRoute>} />
               <Route exact path='/CreateResource' element={<SecureRoute><CreateResource/></SecureRoute>} />
             </Route>
           </Routes>

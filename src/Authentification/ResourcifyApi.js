@@ -8,7 +8,10 @@ export const ResourcifyApi = {
   IsAdmin,
   getAllItems,
   getQty,
-  createAll
+  createAll,
+  addToCart,
+  getCart,
+  addFunds
 }
 
 function authenticate(username, password) {
@@ -37,6 +40,44 @@ function IsAdmin() {
       },
   })
 }
+function addFunds(username,funds) {
+  return instance.post('/demo/add/funds',
+  {
+    username:username,
+    funds:funds
+  }
+  , {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function getCart() {
+  return instance.get('/demo/get/cart', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function addToCart(id) {
+  return instance.post('/demo/do/cart_add',{resource_id:id}, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
 
 function getAllItems(category) {
   return instance.post('/demo/get/resource', category, {

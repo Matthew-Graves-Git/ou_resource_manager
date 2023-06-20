@@ -2,9 +2,18 @@ import { useState ,useEffect } from 'react';
 import '../Components/css/style.css';
 import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
+import { ResourcifyApi } from '../Authentification/ResourcifyApi';
 
 const Cart = (props) => {
     const [currentCart,setCurrentCart] = useState(null)
+
+    function importAll(r) {
+      let images = {};
+      r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+      return images;
+    }
+  
+    const images = importAll(require.context('../Images', false, /\.(png|gif|jpe?g|svg)$/));
 
     const clearCart =  () => {
       localStorage.removeItem("savedCart");
@@ -13,13 +22,24 @@ const Cart = (props) => {
     }
 
     useEffect(() => {
-      const savedCart = JSON.parse(localStorage.getItem("savedCart"));
-      if(savedCart){
-        setCurrentCart(savedCart);
-      }else{
-        setCurrentCart(null);
-      }
-    }, [props.assets.cart]);
+      const all =[];
+      const getSavedCart = async () =>{
+        const cart = await ResourcifyApi.getCart()
+        cart.data.forEach( async (item) => {
+          //const stock = await getResourceQty(item.resourceId)
+          all.push({
+            name: item.name,
+            model: item.modelNumber,
+            price: item.borrowPrice,
+            stock: 1,
+            image: images[item.image],
+            role: [item.resourceId,item.resourceCategory]
+          })
+        });
+        setCurrentCart(all);
+      };
+      getSavedCart()
+    }, []);
 
 
     return (
@@ -31,7 +51,6 @@ const Cart = (props) => {
             </div>
 
             {currentCart && currentCart.map((item) => {
-              console.log(props);
               return (
             <div className="cart-items">
               <div className="image-container">
