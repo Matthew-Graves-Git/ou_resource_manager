@@ -1,0 +1,14 @@
+.footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: hsla(15, 44%, 86%, 0.7);
+  text-align: center;
+  font-size: 12px;
+}
+
+.right {
+  float: right;
+}
