@@ -25,45 +25,89 @@ public class MainController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public void updateQuantity(int resource_id) {
+        Resource r = resourcerepository.findById(resource_id).get();
+        r.setQuantityBorrow( itemRepository.countItems(  resource_id, ItemType.BORROW.name(), true  )  );
+        r.setQuantitySale( itemRepository.countItems(  resource_id, ItemType.SALE.name(), true  ) );
+        resourcerepository.save(r);
+    }
+
+
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/add")
-    public @ResponseBody String addNewUser (@RequestBody JsonNode payload)
-    {
-        // @RequestParam means it is a parameter from the GET or POST request
-        if (userRepository.findByUsername(  payload.get("username").textValue()  ).isPresent()) {
-            return "User already Exists";
+    @PostMapping(path="/add/user")
+    public @ResponseBody String createOrEditUser (@RequestBody JsonNode payload) {
+        if ( payload.get("request_type").textValue().equals("create") && userRepository.findByUsername(  payload.get("username").textValue()  ).isPresent() ) {
+            return "Username Already Exists";
         }
-        User n = new User();
-        n.setRole(payload.get("role").textValue());
-        n.setUsername(payload.get("username").textValue());
-        n.setPassword(  passwordEncoder.encode(payload.get("password").textValue())  );
-        n.setLastname(payload.get("lastname").textValue());
-        n.setFirstname(payload.get("firstname").textValue());
-        userRepository.save(n);
-        return "Saved";
+        else if ( payload.get("request_type").textValue().equals("create") ) {
+            User n = new User();
+            n.setRole(payload.get("role").textValue());
+            n.setUsername(payload.get("username").textValue());
+            n.setPassword(  passwordEncoder.encode(payload.get("password").textValue())  );
+            n.setLastname(payload.get("lastname").textValue());
+            n.setFirstname(payload.get("firstname").textValue());
+            userRepository.save(n);
+            return "Created New User";
+        }
+        else if ( payload.get("request_type").textValue().equals("edit") && userRepository.findByUsername(  payload.get("username").textValue()  ).isPresent() ) {
+            User n = userRepository.findByUsername(  payload.get("username").textValue()  ).get();
+            n.setRole(payload.get("role").textValue());
+            if ( payload.get("confirm_set_password").textValue().equals("yes") ) {
+                n.setPassword(  passwordEncoder.encode(payload.get("password").textValue())  );
+            }
+            n.setLastname(payload.get("lastname").textValue());
+            n.setFirstname(payload.get("firstname").textValue());
+            n.setAvailableFunds(Float.valueOf(payload.get("funds").asText()));
+            userRepository.save(n);
+            return "Updated User";
+        }
+        else {
+            return "User Not Found";
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/funds")
     public @ResponseBody String addFunds (@RequestBody JsonNode payload) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(  payload.get("username").textValue()  ).get();
-        user.setAvailableFunds( user.getAvailableFunds() + payload.get("funds").floatValue() );
+        user.setAvailableFunds( user.getAvailableFunds() + Float.valueOf(payload.get("funds").asText()) );
+        userRepository.save(user);
         return "Added Funds";
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/resource")
-    public @ResponseBody String addNewResource (@RequestBody JsonNode payload) {
-        Resource r = new Resource();
-        r.setResourceCategory(payload.get("resource_category").textValue());
-        r.setName(payload.get("name").textValue());
-        r.setDescription(payload.get("description").textValue());
-        r.setImage(payload.get("image").textValue());
-        r.setModelNumber(payload.get("model_number").textValue());
-        r.setBorrowPrice(Float.parseFloat(payload.get("borrow_price").textValue()));
-        r.setSalePrice(Float.parseFloat(payload.get("sale_price").textValue()));
-        resourcerepository.save(r);
-        return "Added Resource";
+    public @ResponseBody String createOrEditResource (@RequestBody JsonNode payload) {
+        if ( payload.get("request_type").textValue().equals("create") && !payload.get("resource_id").textValue().equals("")) {
+            return "Resource ID must be blank to create a new Resource!";
+        }
+        else if ( payload.get("request_type").textValue().equals("create") ) {
+            Resource r = new Resource();
+            r.setResourceCategory(payload.get("resource_category").textValue());
+            r.setName(payload.get("name").textValue());
+            r.setDescription(payload.get("description").textValue());
+            r.setImage(payload.get("image").textValue());
+            r.setModelNumber(payload.get("model_number").textValue());
+            r.setBorrowPrice(Float.parseFloat(payload.get("borrow_price").textValue()));
+            r.setSalePrice(Float.parseFloat(payload.get("sale_price").textValue()));
+            resourcerepository.save(r);
+            return "Created New Resource";
+        }
+        else if ( payload.get("request_type").textValue().equals("edit") && resourcerepository.findById(  payload.get("resource_id").asInt() ).isPresent() ) {
+            Resource r = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
+            r.setResourceCategory(payload.get("resource_category").textValue());
+            r.setName(payload.get("name").textValue());
+            r.setDescription(payload.get("description").textValue());
+            r.setImage(payload.get("image").textValue());
+            r.setModelNumber(payload.get("model_number").textValue());
+            r.setBorrowPrice(Float.parseFloat(payload.get("borrow_price").textValue()));
+            r.setSalePrice(Float.parseFloat(payload.get("sale_price").textValue()));
+            resourcerepository.save(r);
+            return "Edited Resource";
+        }
+        else {
+            return "Resource ID not found";
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -76,6 +120,7 @@ public class MainController {
         i.setSerialNumber(payload.get("serial_number").textValue());
         i.setAvailable(true);
         itemRepository.save(i);
+        updateQuantity(payload.get("resource_id").asInt());
         return "Added Item";
     }
 
@@ -92,24 +137,11 @@ public class MainController {
         return resourcerepository.getResources(  payload.get("resource_category").asText() ).get();
     }
 
-
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path="/get/cart")
     public @ResponseBody List<Resource> getCart(HttpServletRequest request) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         return resourcerepository.getResourcesCart(  user.getCart()  ).get();
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/sale")
-    public @ResponseBody int getAvailPurchase(@RequestBody JsonNode payload) {
-        return itemRepository.countItems(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  );
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/borrow")
-    public @ResponseBody int getAvailBorrow(@RequestBody JsonNode payload) {
-        return itemRepository.countItems(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  );
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -142,15 +174,25 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/do/cart")
-    public @ResponseBody String setCart(HttpServletRequest request, @RequestBody JsonNode payload) {
+    @PostMapping(path="/do/cart_add")
+    public @ResponseBody String addToCart(HttpServletRequest request, @RequestBody JsonNode payload) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
-        List<String> cart = new ArrayList<String>();
-        for (JsonNode item : payload) {
-            cart.add(item.asText());
-        }
+        List<String> cart = user.getCart();
+        cart.add(payload.get("resource_id").asText());
         user.setCart(cart);
-        return "Cart Updated!";
+        userRepository.save(user);
+        return "Added To Cart";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/cart_remove")
+    public @ResponseBody String removeFromCart(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
+        List<String> cart = user.getCart();
+        cart.remove(payload.get("resource_id").asText());
+        user.setCart(cart);
+        userRepository.save(user);
+        return "Removed From Cart";
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -164,11 +206,12 @@ public class MainController {
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(),  ItemType.SALE.name(), true  ) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to purchase
         }
-        Item itemToPurchase = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  ).get();
+        Item itemToPurchase = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.SALE.name(), true  ).get();
         itemToPurchase.setAvailable(false);
         itemToPurchase.setUsername(user.getUsername());
         itemToPurchase.setTransactionPrice(resource.getSalePrice());
         itemToPurchase.setTransactionTime(LocalDateTime.now());
+        updateQuantity(payload.get("resource_id").asInt());
         return "Purchase Successful!";
     }
 
@@ -183,12 +226,13 @@ public class MainController {
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to borrow
         }
-        Item itemToBorrow = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  ).get();
+        Item itemToBorrow = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ).get();
         itemToBorrow.setAvailable(false);
         itemToBorrow.setUsername(user.getUsername());
         itemToBorrow.setTransactionPrice(resource.getBorrowPrice());
         itemToBorrow.setTransactionTime(LocalDateTime.now());
         itemToBorrow.setBorrowTime(payload.get("borrow_time").asLong());
+        updateQuantity(payload.get("resource_id").asInt());
         return "Borrow Successful!";
     }
 
@@ -199,6 +243,7 @@ public class MainController {
         item.setTransactionTime(null);
         item.setTransactionPrice(null);
         item.setBorrowTime(null);
+        updateQuantity(payload.get("resource_id").asInt());
         return "Return Successful!";
     }
 
