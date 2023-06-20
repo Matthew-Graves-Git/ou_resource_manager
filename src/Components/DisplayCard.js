@@ -7,11 +7,10 @@ const DisplayCard = ({children}) => {
     return (
         <div className='Container'>
             {Children.map(childrenArray, (child, index) =>{
-                console.log(child.type);
-                if (index == 0) {
+                if (index === 0) {
                     return <div className='Image-container' key = {index}>{child}</div>
                 }
-                else if (child.type == 'button') {
+                else if (child.type === 'button') {
                     return child;
                 }
                 else {
