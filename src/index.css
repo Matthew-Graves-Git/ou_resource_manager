@@ -5,10 +5,57 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e9e9e9;
+  background-color: #ffffff;
+  color: #514945;
+  background: url(Images/bg-image.jpg) rgba(109, 0, 0, 0.3);;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 1600px auto;
+  background-blend-mode: luminosity;
+}
+
+a {
+  color: #a40202;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #D55C5A;
+  text-decoration: none;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.content {
+  padding: 30px 100px 100px 100px;
+}
+
+button {
+  border-radius: 5px;
+  padding: 15px 20px;
+  background-color: #a40202;
+  color: white;
+  border: none;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #D55C5A;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 31%;
+  padding: 10px;
 }

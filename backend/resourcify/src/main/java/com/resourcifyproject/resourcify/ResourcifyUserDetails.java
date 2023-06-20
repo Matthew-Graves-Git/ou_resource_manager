@@ -1,17 +1,12 @@
 package com.resourcifyproject.resourcify;
 
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
-import static java.lang.String.valueOf;
-
-public class ResourcifyUser implements UserDetails {
+public class ResourcifyUserDetails implements UserDetails {  //intentionally does not include available funds
 
     private final Integer id;
     private final Role role;
@@ -19,17 +14,15 @@ public class ResourcifyUser implements UserDetails {
     private final String password;
     private final String firstname;
     private final String lastname;
-    private final int availablefunds;
-    private Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+    private final Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 
-    public ResourcifyUser(User user) {
+    public ResourcifyUserDetails(User user) {
         this.id = user.getId();
         this.role = user.getRole();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
-        this.availablefunds = user.getAvailablefunds();
         this.authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
@@ -67,5 +60,4 @@ public class ResourcifyUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

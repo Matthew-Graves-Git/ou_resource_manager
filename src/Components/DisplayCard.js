@@ -7,7 +7,16 @@ const DisplayCard = ({children}) => {
     return (
         <div className='Container'>
             {Children.map(childrenArray, (child, index) =>{
-                return <div className={ index === 0 ? 'Image-container':'Text-container'} key = {index}>{child} </div>
+                console.log(child.type);
+                if (index == 0) {
+                    return <div className='Image-container' key = {index}>{child}</div>
+                }
+                else if (child.type == 'button') {
+                    return child;
+                }
+                else {
+                    return <div className='Text-container' key = {index}>{child} </div>
+                }
             })}
         </div>
     );
