@@ -26,11 +26,11 @@ function App() {
   const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const [items,setItems] = useState(all);
-  const [laptops,setlaptops] = useState(laptop);
-  const [pcs,setpcs] = useState(pc);
-  const [accesories,setaccesories] = useState(accesorie);
-  const [tablet,settablet] = useState(tablets);
+  const [items,setItems] = useState([]);
+  const [laptops,setlaptops] = useState([]);
+  const [pcs,setpcs] = useState([]);
+  const [accesories,setaccesories] = useState([]);
+  const [tablet,settablet] = useState([]);
 
 const filterResources = (all) =>{
   settablet(all.filter(item => item.role === "TABLET"))
@@ -56,44 +56,48 @@ function postAll(array, cat){
 }
 
 useEffect( () => {
+  //postAll(laptops,"LAPTOP")
+  //postAll(pc,"DESKTOP")
+  // postAll(tablets,"TABLET")
+  // postAll(accesorie,"CALCULATOR")
   const all = [];
   async function getResourceQty(id){
     const stock = await ResourcifyApi.getQty(id);
     return stock.data;
   }
   async function getResources(category){
-    const resources = await ResourcifyApi.getAllItems({resource_category:"LAPTOP"});
+    const resources = await ResourcifyApi.getAllItems({resource_category:category});
     if(resources){
       resources.data.forEach( async (item) => {
-        const stock = await getResourceQty(item.resourceId)
+        //const stock = await getResourceQty(item.resourceId)
         all.push({
           name: item.name,
           model: item.modelNumber,
-          price: item.salePrice,
-          stock: stock,
+          price: item.borrowPrice,
+          stock: 1,
           image: images[item.image],
           role: item.resourceCategory
         })
       });
       filterResources(all)
     }
-    if(category === 'all'){
-      setItems(all);
-    }else if(category === 'pc'){
+    if(category === 'LAPTOP'){
+      console.log("got to")
+      setlaptops(all);
+    }else if(category === 'DESKTOP'){
       setpcs(all)
-    }else if(category === 'acc'){
+    }else if(category === 'CALCULATOR'){
       setaccesories(all)
-    }else if(category === 'tab'){
+    }else if(category === 'TABLET'){
+      setItems(all);
+    }else{
       settablet(all)
-    }else if(category === 'lap'){
-      setlaptops(all)
     }
   }
-  getResources('all');
-  getResources('pc');
-  getResources('acc');
-  getResources('tab');
-  getResources('lap');
+   getResources('LAPTOP');
+   getResources('DESKTOP');
+   getResources('CALCULATOR');
+   getResources('TABLET');
   
 }, [] );
 
