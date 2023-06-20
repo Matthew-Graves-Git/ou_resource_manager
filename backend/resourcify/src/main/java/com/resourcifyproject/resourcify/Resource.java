@@ -25,6 +25,38 @@ public class Resource {
         this.resourceCategory = ResourceCategory.valueOf(resourceCategory);
     }
 
+    public Integer getResourceId() {
+        return resourceId;
+    }
+
+    public ResourceCategory getResourceCategory() {
+        return resourceCategory;
+    }
+
+    public int getQuantityBorrow() {
+        return quantityBorrow;
+    }
+
+    public int getQuantitySale() {
+        return quantitySale;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getModelNumber() {
+        return modelNumber;
+    }
+
     public void setQuantityBorrow(int quantityBorrow) { this.quantityBorrow = quantityBorrow; }
 
     public void setQuantitySale(int quantitySale) { this.quantitySale = quantitySale; }

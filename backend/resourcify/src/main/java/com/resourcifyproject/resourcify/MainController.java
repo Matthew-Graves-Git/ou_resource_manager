@@ -78,10 +78,7 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/resource")
     public @ResponseBody String createOrEditResource (@RequestBody JsonNode payload) {
-        if ( payload.get("request_type").textValue().equals("create") && !payload.get("resource_id").textValue().equals("")) {
-            return "Resource ID must be blank to create a new Resource!";
-        }
-        else if ( payload.get("request_type").textValue().equals("create") ) {
+        if ( payload.get("request_type").textValue().equals("create") ) {
             Resource r = new Resource();
             r.setResourceCategory(payload.get("resource_category").textValue());
             r.setName(payload.get("name").textValue());
@@ -131,9 +128,12 @@ public class MainController {
         return resourcerepository.getResourcesExceptCart(  payload.get("resource_category").asText(), user.getCart()  ).get();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResourcesByType(@RequestBody JsonNode payload) {
+        if(payload.get("resource_category").asText().equals("ALL")){
+            return resourcerepository.findAll();
+        }
         return resourcerepository.getResources(  payload.get("resource_category").asText() ).get();
     }
 
