@@ -44,10 +44,10 @@ const filterResources = (all) =>{
   )))
 }
 
-//   //postAll(laptop,"LAPTOP")
-//   //postAll(pc,"DESKTOP")
-//   // postAll(tablets,"TABLET")
-//   // postAll(accesorie,"CALCULATOR")
+//postAll(laptop,"LAPTOP")
+//postAll(pc,"DESKTOP")
+// postAll(tablets,"TABLET")
+// postAll(accesorie,"CALCULATOR")
 
 
 const handleRent = async (role,model,category) =>{

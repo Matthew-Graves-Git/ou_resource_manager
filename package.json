@@ -1,5 +1,8 @@
 {
-  "proxy": "http://localhost:8080",
+  "options": {
+    "allowedHosts": ["localhost", ".localhost"],
+    "proxy": "https://localhost:8080/"
+  },
   "name": "ou_resource_manager",
   "version": "0.1.0",
   "private": true,
