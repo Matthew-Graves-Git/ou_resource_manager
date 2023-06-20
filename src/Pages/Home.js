@@ -10,7 +10,7 @@ const Home = (props) => {
         <div>
             <header className="header">
                 <h1>Welcome to Maple University</h1>
-                <h2>We provide various products to fulfill your medical needs.</h2>
+                <h2>We provide various products to fulfill technology needs.</h2>
 
                 <a href="#all_products">
                     <button><b>Explore Product</b></button>
