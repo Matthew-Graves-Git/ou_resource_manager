@@ -161,7 +161,7 @@ public class MainController {
         if ( user.getAvailableFunds() < resource.getSalePrice() ) {
             throw new ForbiddenException(); //They don't have enough money
         }
-        if ( itemRepository.countItems(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  ) < 1 ) {
+        if ( itemRepository.countItems(  payload.get("resource_id").asInt(),  ItemType.SALE.name(), true  ) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to purchase
         }
         Item itemToPurchase = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  ).get();
@@ -180,7 +180,7 @@ public class MainController {
         if ( user.getAvailableFunds() < resource.getBorrowPrice() ) {
             throw new ForbiddenException(); //They don't have enough money
         }
-        if ( itemRepository.countItems(  payload.get("resource_id").asInt(),payload.get("item_type").asText(), true  ) < 1 ) {
+        if ( itemRepository.countItems(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ) < 1 ) {
             throw new ArithmeticException(); //There is not an item available to borrow
         }
         Item itemToBorrow = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), payload.get("item_type").asText(), true  ).get();
