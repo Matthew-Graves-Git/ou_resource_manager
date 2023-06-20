@@ -5,8 +5,8 @@ import Login from './Pages/Login';
 import { AuthProvider } from './Authentification/Auth';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Laptop from "./Pages/Laptop";
-import Product from "./Pages/Product";
 import Cart from './Pages/Cart';
+import Product from './Pages/Product';
 import {SecureRoute} from './Authentification/SecureRoute';
 import DefaultContainer from './Components/DefaultContainer';
 import LoginContainer from './Components/LoginContainer';
@@ -27,11 +27,11 @@ function App() {
   const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const [items,setItems] = useState(all);
-  const [laptops,setlaptops] = useState(laptop);
-  const [pcs,setpcs] = useState(pc);
-  const [accesories,setaccesories] = useState(accesorie);
-  const [tablet,settablet] = useState(tablets);
+  const [items,setItems] = useState([]);
+  const [laptops,setlaptops] = useState([]);
+  const [pcs,setpcs] = useState([]);
+  const [accesories,setaccesories] = useState([]);
+  const [tablet,settablet] = useState([]);
 
 const filterResources = (all) =>{
   settablet(all.filter(item => item.role === "TABLET"))
@@ -57,44 +57,47 @@ function postAll(array, cat){
 }
 
 useEffect( () => {
+  //postAll(laptops,"LAPTOP")
+  //postAll(pc,"DESKTOP")
+  // postAll(tablets,"TABLET")
+  // postAll(accesorie,"CALCULATOR")
   const all = [];
   async function getResourceQty(id){
     const stock = await ResourcifyApi.getQty(id);
     return stock.data;
   }
   async function getResources(category){
-    const resources = await ResourcifyApi.getAllItems({resource_category:"LAPTOP"});
+    const resources = await ResourcifyApi.getAllItems({resource_category:category});
     if(resources){
       resources.data.forEach( async (item) => {
-        const stock = await getResourceQty(item.resourceId)
+        //const stock = await getResourceQty(item.resourceId)
         all.push({
           name: item.name,
           model: item.modelNumber,
-          price: item.salePrice,
-          stock: stock,
+          price: item.borrowPrice,
+          stock: 1,
           image: images[item.image],
           role: item.resourceCategory
         })
       });
       filterResources(all)
     }
-    if(category === 'all'){
-      setItems(all);
-    }else if(category === 'pc'){
+    if(category === 'LAPTOP'){
+      setlaptops(all);
+    }else if(category === 'DESKTOP'){
       setpcs(all)
-    }else if(category === 'acc'){
+    }else if(category === 'CALCULATOR'){
       setaccesories(all)
-    }else if(category === 'tab'){
+    }else if(category === 'TABLET'){
+      setItems(all);
+    }else{
       settablet(all)
-    }else if(category === 'lap'){
-      setlaptops(all)
     }
   }
-  getResources('all');
-  getResources('pc');
-  getResources('acc');
-  getResources('tab');
-  getResources('lap');
+   getResources('LAPTOP');
+   getResources('DESKTOP');
+   getResources('CALCULATOR');
+   getResources('TABLET');
   
 }, [] );
 
@@ -115,21 +118,9 @@ const handleRent = (model,category) =>{
   console.log("got to", category);
   const t2 = cart.slice();
   const t3 = temp.filter(item => item.model === model);
-  const t4 = temp.filter(item => item.model !== model);
   addToTotal(parseInt(t3[0].price));
   t2.push(t3[0]);
   setCart(t2);
-  if(category === 'all'){
-    setItems(t4);
-  }else if(category === 'pc'){
-    setpcs(t4)
-  }else if(category === 'acc'){
-    setaccesories(t4)
-  }else if(category === 'tab'){
-    settablet(t4)
-  }else if(category === 'lap'){
-    setlaptops(t4)
-  }
   
 }
 
