@@ -51,7 +51,8 @@ const filterResources = (all) =>{
 //           ...element,
 //           resource_category:cat,
 //           sale_price:"199.00",
-//           description:""
+//           description:"",
+//           request_type: "create"
 //       }
 //       )
 //   });
