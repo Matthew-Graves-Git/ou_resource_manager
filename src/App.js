@@ -59,7 +59,7 @@ const filterResources = (all) =>{
 // }
 //
 // useEffect( () => {
-//   postAll(laptops,"LAPTOP")
+//   postAll(laptop,"LAPTOP")
 //   postAll(pc,"DESKTOP")
 //   postAll(tablets,"TABLET")
 //   postAll(accesorie,"CALCULATOR")
