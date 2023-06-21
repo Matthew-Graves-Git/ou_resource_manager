@@ -122,12 +122,6 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-<<<<<<< HEAD
-    @PostMapping(path="/get/resources")
-    public @ResponseBody List<Resource> getResources(HttpServletRequest request, @RequestBody JsonNode payload) {
-        User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
-        return resourcerepository.getResourcesExceptCart(  payload.get("resource_category").asText(), user.getCart()  ).get();
-    }
 
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResourcesByType(@RequestBody JsonNode payload) {
