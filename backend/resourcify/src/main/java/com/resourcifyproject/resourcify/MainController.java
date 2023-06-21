@@ -129,9 +129,6 @@ public class MainController {
         return resourcerepository.getResourcesExceptCart(  payload.get("resource_category").asText(), user.getCart()  ).get();
     }
 
-  @CrossOrigin(origins = "http://localhost:3000")
-=======
->>>>>>> ea928469b069fd9bb1e3dccf7d0fccb2d25f9417
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResourcesByType(@RequestBody JsonNode payload) {
         if(payload.get("resource_category").asText().equals("ALL")){
