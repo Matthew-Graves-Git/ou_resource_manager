@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '../Authentification/Auth';
 import { ResourcifyApi } from '../Authentification/ResourcifyApi';
-import './login.css';
+import '../Pages/login.css';
 
 const Login = () => {
     const [username, setusername] = useState("");
@@ -38,21 +38,23 @@ const Login = () => {
 
     return ( 
       <>
-        <div className="login">
-          <div className="login-box">
+        <div className="content login">
+          <div className="form-container">
           <h2>Login</h2>
           {error && revealErr()}
           <form onSubmit={handleSubmit}>
-            <div className="user-box">
+            <div className="text-field-box">
               <input type="text" value={username} onChange={(e) => {setusername(e.target.value)}}/>
               <label>Username</label>
             </div>
-            <div className="user-box">
+            <div className="text-field-box">
               <input type="password" value={password} onChange={(e) => {setpassword(e.target.value)}}/>
               <label>Password</label>
             </div>
-            <button type="submit" className="button">Sign In</button>
-            <button onClick={signUpRequest} className="button">Sign Up</button>
+            <div class="button-field">
+              <button type="submit" className="button">Sign In</button>
+              <button onClick={signUpRequest} className="button">Sign Up</button>
+            </div>
           </form>
         </div>
       </div>

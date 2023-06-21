@@ -5,6 +5,7 @@ import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 import './home.css'
 import '../Components/css/style.css';
+import { IsAdmin } from '../Authentification/SecureRoute';
 const PC = (props) => {
 
   function importAll(r) {
@@ -14,7 +15,6 @@ const PC = (props) => {
   }
 
   const images = importAll(require.context('../Images', false, /\.(png|gif|jpe?g|svg)$/));
-
 
 const [items,setItems] = useState([]);
 
@@ -69,7 +69,9 @@ useEffect( () => {
           <DisplayCard key={item.model} className='temp'>
           <img  alt= {item.name}src = {item.image}></img>
           <ItemDescriptionCard json={item}/>
+          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'>Buy</button>
+          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
           </DisplayCard>
           </div>

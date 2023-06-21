@@ -1,6 +1,5 @@
 import React, { useState} from 'react';
 import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
-//import '../login.css';
 
 const Funds = () => {
     const [username, setusername] = useState("");
@@ -37,24 +36,26 @@ const Funds = () => {
         return <p>{success}</p>
       }
     return ( 
-      <>
-        <div className="login-box">
+      <div className="content">
+        <div className="form-container">
         <h2>Add Funds</h2>
         {success && revealSucess()}
         {error && revealErr()}
         <form onSubmit={handleSubmit}>
-          <div className="user-box">
+          <div className="text-field-box">
             <input type="text" value={username} onChange={(e) => {setusername(e.target.value)}}/>
             <label>Username</label>
           </div>
-          <div className="user-box">
+          <div className="text-field-box">
             <input type="number" value={funds} onChange={(e) => {setFunds(e.target.value)}}/>
             <label>Amount</label>
           </div>
-          <button type="submit" className="button">Add</button>
+          <div class="button-field">
+            <button type="submit" className="button">Add</button>
+          </div>
         </form>
       </div>
-      </>
+      </div>
       
     );
 }

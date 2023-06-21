@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom'
 import { ResourcifyApi } from '../Authentification/ResourcifyApi';
-import './login.css';
 
 const SignUp = () => {
     const [username, setusername] = useState("");
@@ -41,24 +40,24 @@ const SignUp = () => {
     return ( 
       <>
         
-        <div className="login-box">
+        <div className="form-container">
         <h2>Sign Up</h2>
         {success && revealSucess()}
         {error && revealErr()}
         <form onSubmit={handleSubmit}>
-        <div className="user-box">
+        <div className="text-field-box">
             <input type="text" value={firstName} onChange={(e) => {setFirstName(e.target.value)}}/>
             <label>First Name</label>
           </div>
-          <div className="user-box">
+          <div className="text-field-box">
             <input type="text" value={lastName} onChange={(e) => {setLastName(e.target.value)}}/>
             <label>Last Name</label>
           </div>
-          <div className="user-box">
+          <div className="text-field-box">
             <input type="text" value={username} onChange={(e) => {setusername(e.target.value)}}/>
             <label>Username</label>
           </div>
-          <div className="user-box">
+          <div className="text-field-box">
             <input type="password" value={password} onChange={(e) => {setpassword(e.target.value)}}/>
             <label>Password</label>
           </div>

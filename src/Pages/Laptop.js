@@ -5,6 +5,7 @@ import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 import './home.css'
 import '../Components/css/style.css';
+import { IsAdmin } from '../Authentification/SecureRoute';
 
 const Laptop = (props) => {
     
@@ -71,7 +72,9 @@ useEffect( () => {
           <DisplayCard key={item.model} className='temp'>
           <img  alt= {item.name}src = {item.image}></img>
           <ItemDescriptionCard json={item}/>
+          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'>Buy</button>
+          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
           </DisplayCard>
           </div>

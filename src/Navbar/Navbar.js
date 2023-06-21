@@ -19,9 +19,13 @@ const NavBar = () => {
               <li><Link to="/Laptops">Laptops</Link></li>
               <li><Link to="/Accesories">Accessories</Link></li>
               <li><Link to="/Cart">Cart</Link></li>
+              <li><Link to="/Profile">My Account</Link></li>
               {/* <li><Link to="/Cart"><img alt='cart' src={cart}/></Link></li> */}
-              <li><Link to="/Funds">Add Funds</Link></li>
-              <li>{IsAdmin()}</li>
+              {IsAdmin() ?  <><li><Link to="/CreateResource">Resource</Link></li>
+                            <li><Link to="/Funds">Add Funds</Link></li>
+                            <li><Link to="/Return">Return</Link></li>
+                            <li><Link to="/Restock">Restock</Link></li></> :
+                            <></>}
               <li><Link to="/Logout">Logout</Link></li>
             </ul>
           </nav>

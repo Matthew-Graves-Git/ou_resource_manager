@@ -58,7 +58,7 @@ const Cart = (props) => {
               </div>
               <div className="about">
                 <h2 className="title">{item.name}</h2>
-                <h4 className="subtitle">{item.model_number}</h4>
+                <h4 className="subtitle">{item.model}</h4>
               </div>
               <div className="counter">
                 <div className="btn">+</div>
@@ -66,7 +66,7 @@ const Cart = (props) => {
                 <div className="btn">-</div>
               </div>
               <div className="prices">
-                <div className="price">${item.borrow_price}</div>
+                <div className="price">${item.price}</div>
                 <div className="remove"><a href="#">Remove</a></div>
               </div>
             </div>
