@@ -44,7 +44,7 @@ const filterResources = (all) =>{
   )))
 }
 
-
+<<<<<<< HEAD
 function postAll(array, cat){
   array.forEach(async element => {
     
@@ -66,7 +66,13 @@ useEffect( () => {
   // postAll(tablets,"TABLET")
   // postAll(accesorie,"CALCULATOR")  
 }, [] );
+=======
+//postAll(laptop,"LAPTOP")
+//postAll(pc,"DESKTOP")
+// postAll(tablets,"TABLET")
+// postAll(accesorie,"CALCULATOR")
 
+>>>>>>> ea928469b069fd9bb1e3dccf7d0fccb2d25f9417
 
 const handleRent = async (role,model,category) =>{
   const [id,cat] = role;
