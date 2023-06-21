@@ -19,41 +19,59 @@ public class Resource {
     private float salePrice, borrowPrice;
 
 
-    public Integer getResourceId() { return resourceId; } //no setter for ID
-
-    public ResourceCategory getResourceCategory() { return resourceCategory; }
+    //no setter for ID
 
     public void setResourceCategory(String resourceCategory) {
         this.resourceCategory = ResourceCategory.valueOf(resourceCategory);
     }
 
-    public int getQuantityBorrow() { return quantityBorrow; }
+    public Integer getResourceId() {
+        return resourceId;
+    }
+
+    public ResourceCategory getResourceCategory() {
+        return resourceCategory;
+    }
+
+    public int getQuantityBorrow() {
+        return quantityBorrow;
+    }
+
+    public int getQuantitySale() {
+        return quantitySale;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getModelNumber() {
+        return modelNumber;
+    }
 
     public void setQuantityBorrow(int quantityBorrow) { this.quantityBorrow = quantityBorrow; }
 
-    public int getQuantitySale() { return quantitySale; }
-
     public void setQuantitySale(int quantitySale) { this.quantitySale = quantitySale; }
-
-    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getImage() { return image; }
-
     public void setImage(String image) {
         this.image = image;
     }
 
-    public String getModelNumber() { return modelNumber; }
-
     public void setModelNumber(String model) {
         this.modelNumber = model;
     }
-
-    public String getDescription() { return description; }
 
     public void setDescription(String description) {
         this.description = description;

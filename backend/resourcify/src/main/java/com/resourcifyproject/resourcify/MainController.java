@@ -122,7 +122,6 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-<<<<<<< HEAD
     @PostMapping(path="/get/resources")
     public @ResponseBody List<Resource> getResources(HttpServletRequest request, @RequestBody JsonNode payload) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
@@ -130,8 +129,6 @@ public class MainController {
     }
 
   @CrossOrigin(origins = "http://localhost:3000")
-=======
->>>>>>> ea928469b069fd9bb1e3dccf7d0fccb2d25f9417
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResourcesByType(@RequestBody JsonNode payload) {
         if(payload.get("resource_category").asText().equals("ALL")){
@@ -174,19 +171,6 @@ public class MainController {
     public @ResponseBody User getUser(HttpServletRequest request) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         return user;
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/do/update_password")
-    public @ResponseBody String updatePassword(HttpServletRequest request, @RequestBody JsonNode payload) {
-        User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
-        if (  passwordEncoder.encode( payload.get("current_password").textValue() ).equals( user.getPassword() )  ) {
-            user.setPassword(  passwordEncoder.encode(payload.get("new_password").textValue())  );
-            return "Updated Password";
-        }
-        else {
-            return "Current Password Is Incorrect";
-        }
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
