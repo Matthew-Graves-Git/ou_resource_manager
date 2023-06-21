@@ -8,7 +8,7 @@ import '../Components/css/style.css';
 import { IsAdmin } from '../Authentification/SecureRoute';
 
 const Laptop = (props) => {
-    
+    let cred = false;
 
   function importAll(r) {
     let images = {};
@@ -66,21 +66,25 @@ useEffect( () => {
       </div>
 
       <div className='hole'>
-        <div className="row">
-          {items && items.map((item) => {return (
-          <div className="column">
-          <DisplayCard key={item.model} className='temp'>
-          <img  alt= {item.name}src = {item.image}></img>
-          <ItemDescriptionCard json={item}/>
-          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
-          <button className='Item-button'>Buy</button>
-          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
-          <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
-          </DisplayCard>
-          </div>
-        )})}
-        </div>
-      </div>
+                    <div className="row">
+                    {cred = IsAdmin()}
+                    {items && items.map((item) => {return (
+                      
+                    <div className="column">
+                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
+                    <DisplayCard key={item.model} className='temp'>
+                    <img alt={item.name} src={item.image}></img>
+                    
+                    <ItemDescriptionCard json={item}/>
+                    
+                    <button className='Item-button'>Buy</button>
+                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
+                    
+                    </DisplayCard>
+                    </div>
+                    )})}
+                    </div>
+                </div>
     </div>
   );
 }

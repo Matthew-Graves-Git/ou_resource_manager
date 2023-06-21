@@ -8,6 +8,8 @@ import '../Components/css/style.css';
 import { IsAdmin } from '../Authentification/SecureRoute';
 
 const Accesories = (props) => {
+
+  let cred = false;
   function importAll(r) {
     let images = {};
     r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
@@ -25,15 +27,10 @@ useEffect( () => {
     // postAll(tablets,"TABLET")
     // postAll(accesorie,"CALCULATOR")
     const all = [];
-    async function getResourceQty(id){
-      const stock = await ResourcifyApi.getQty(id);
-      return stock.data;
-    }
     async function getResources(category){
       const resources = await ResourcifyApi.getAllItems({resource_category:category});
       if(resources){
         resources.data.forEach( async (item) => {
-          //const stock = await getResourceQty(item.resourceId)
           all.push({
             name: item.name,
             model: item.modelNumber,
@@ -64,21 +61,25 @@ useEffect( () => {
       </div>
 
       <div className='hole'>
-        <div className="row">
-          {items && items.map((item) => {return (
-          <div className="column">
-          <DisplayCard key={item.model} className='temp'>
-          <img  alt= {item.name}src = {item.image}></img>
-          <ItemDescriptionCard json={item}/>
-          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
-          <button className='Item-button'>Buy</button>
-          {IsAdmin() ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
-          <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
-          </DisplayCard>
-          </div>
-        )})}
-        </div>
-      </div>
+                    <div className="row">
+                    {cred = IsAdmin()}
+                    {items && items.map((item) => {return (
+                      
+                    <div className="column">
+                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
+                    <DisplayCard key={item.model} className='temp'>
+                    <img alt={item.name} src={item.image}></img>
+                    
+                    <ItemDescriptionCard json={item}/>
+                    
+                    <button className='Item-button'>Buy</button>
+                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
+                    
+                    </DisplayCard>
+                    </div>
+                    )})}
+                    </div>
+                </div>
     </div>
   );
 }

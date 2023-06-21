@@ -33,7 +33,7 @@ const SecureRoute = ({children}) => {
 // }
 
 const IsAdmin =  () => {
-  const [A, setA] = useState(null);
+  const [A, setA] = useState(false);
   useEffect(() => {
     const x = async () =>{
       await ResourcifyApi.IsAdmin()
