@@ -44,26 +44,26 @@ const filterResources = (all) =>{
   )))
 }
 
-function postAll(array, cat){
-  array.forEach(async element => {
-      await ResourcifyApi.createAll(
-      {
-          ...element,
-          resource_category:cat,
-          sale_price:"199.00",
-          description:"",
-          request_type: "create"
-      }
-      )
-  });
-}
-
-useEffect( () => {
-  postAll(laptops,"LAPTOP")
-  postAll(pc,"DESKTOP")
-  postAll(tablets,"TABLET")
-  postAll(accesorie,"CALCULATOR")
-}, [] );
+// function postAll(array, cat){
+//   array.forEach(async element => {
+//       await ResourcifyApi.createAll(
+//       {
+//           ...element,
+//           resource_category:cat,
+//           sale_price:"199.00",
+//           description:"",
+//           request_type: "create"
+//       }
+//       )
+//   });
+// }
+//
+// useEffect( () => {
+//   postAll(laptops,"LAPTOP")
+//   postAll(pc,"DESKTOP")
+//   postAll(tablets,"TABLET")
+//   postAll(accesorie,"CALCULATOR")
+// }, [] );
 
 const handleRent = async (role,model,category) =>{
   const [id,cat] = role;
