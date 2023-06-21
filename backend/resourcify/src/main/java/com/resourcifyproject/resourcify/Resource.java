@@ -60,4 +60,20 @@ public class Resource {
     public void setBorrowPrice(float borrowPrice) {
         this.borrowPrice = borrowPrice;
     }
+
+    public Integer getResourceId() { return resourceId; }
+
+    public ResourceCategory getResourceCategory() { return resourceCategory; }
+
+    public int getQuantityBorrow() { return quantityBorrow; }
+
+    public int getQuantitySale() { return quantitySale; }
+
+    public String getName() { return name; }
+
+    public String getDescription() { return description; }
+
+    public String getImage() { return image; }
+
+    public String getModelNumber() { return modelNumber; }
 }

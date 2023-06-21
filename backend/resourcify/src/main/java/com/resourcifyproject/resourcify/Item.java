@@ -26,7 +26,6 @@ public class Item {
 
 
     //no setter for ID
-
     public void setResource(Resource resource) {
         this.resource = resource;
     }
@@ -58,4 +57,22 @@ public class Item {
     public void setBorrowTime(Long borrowTime) {
         this.borrowTime = borrowTime;
     }
+
+    public Integer getItemId() { return itemId; }
+
+    public Resource getResource() { return resource; }
+
+    public ItemType getItemType() { return itemType; }
+
+    public String getSerialNumber() { return serialNumber; }
+
+    public String getUsername() { return username; }
+
+    public boolean isAvailable() { return isAvailable; }
+
+    public LocalDateTime getTransactionTime() { return TransactionTime; }
+
+    public Float getTransactionPrice() { return TransactionPrice; }
+
+    public Long getBorrowTime() { return borrowTime; }
 }

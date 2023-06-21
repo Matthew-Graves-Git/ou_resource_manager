@@ -51,45 +51,18 @@ const filterResources = (all) =>{
 //           ...element,
 //           resource_category:cat,
 //           sale_price:"199.00",
-//           description:""
+//           description:"",
+//           request_type: "create"
 //       }
 //       )
 //   });
 // }
-
+//
 // useEffect( () => {
-//   //postAll(laptops,"LAPTOP")
-//   //postAll(pc,"DESKTOP")
-//   // postAll(tablets,"TABLET")
-//   // postAll(accesorie,"CALCULATOR")
-//   const all = [];
-//   async function getResourceQty(id){
-//     const stock = await ResourcifyApi.getQty(id);
-//     return stock.data;
-//   }
-//   async function getResources(category){
-//     const resources = await ResourcifyApi.getAllItems({resource_category:category});
-//     if(resources){
-//       resources.data.forEach( async (item) => {
-//         //const stock = await getResourceQty(item.resourceId)
-//         all.push({
-//           name: item.name,
-//           model: item.modelNumber,
-//           price: item.borrowPrice,
-//           stock: 1,
-//           image: images[item.image],
-//           role: [item.resourceId,item.resourceCategory]
-//         })
-//       });
-//       setItems(all);
-//     }
-//   }
-//    getResources('LAPTOP');
-//    getResources('DESKTOP');
-//    getResources('CALCULATOR');
-//    getResources('TABLET');
-//    setItems(all);
-  
+//   postAll(laptops,"LAPTOP")
+//   postAll(pc,"DESKTOP")
+//   postAll(tablets,"TABLET")
+//   postAll(accesorie,"CALCULATOR")
 // }, [] );
 
 const handleRent = async (role,model,category) =>{
