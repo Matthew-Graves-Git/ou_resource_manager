@@ -8,19 +8,19 @@ const Restock = () => {
         <form onSubmit="">
           <div className="text-field-box">
             <label>Resource ID</label>
-            <p>123456</p>
+            <p>Click A "Restock" Button</p>
           </div>
           <div className="text-field-box">
-            <label>Serial Number</label>
-            <p>123456</p>
+            <label>Resource Name</label>
+            <p>Click A "Restock" Button</p>
           </div>
           <div className="text-field-box">
             <input type="number" value="" onChange=""/>
-            <label>Quantity</label>
+            <label>Serial Number of Item You Are Adding:</label>
           </div>
           <div className="radio-field-box">
-                <label><input type="radio" value="sales" name="type" checked /> Sales</label>
-                <label><input type="radio" value="rent" name="type" /> Rent</label>
+                <label><input type="radio" value="sales" name="type" checked />For Sale</label>
+                <label><input type="radio" value="rent" name="type" />For Borrowing</label>
           </div>
           <div class="button-field">
             <button type="submit" className="button">Submit</button>

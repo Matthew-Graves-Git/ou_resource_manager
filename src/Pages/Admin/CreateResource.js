@@ -5,15 +5,22 @@ import ItemDescriptionCard from '../../Components/ItemDescriptionCard';
 import './resource.css';
 
 const CreateResource = () => {
-    const [resouceName, setresouceName] = useState();
-    const [model, setmodel] = useState();
-    const [description, setDescription] = useState();
-    const [imageLink, setimageLink] = useState();
-    const [numAvailible, setnumAvailible] = useState(1);
-    const [borrowPeriod, setborrowPeriod] = useState();
-    const [price, setPrice] = useState(0);
-    const [preview, setPreview] = useState();
     const [type, setType] = useState();
+    const [resourceName, setresourceName] = useState();
+    const [model, setmodel] = useState();
+    const [imageLink, setimageLink] = useState();
+    const [salePrice, setSalePrice] = useState();
+    const [borrowFee, setBorrowFee] = useState();
+
+    const [role, setRole] = useState();
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [firstname, setFirstname] = useState();
+    const [lastname, setLastname] = useState();
+    const [funds, setFunds] = useState();
+
+    const [preview, setPreview] = useState();
+
 
     useEffect(() => {
       if (!imageLink) {
@@ -27,21 +34,29 @@ const CreateResource = () => {
       return () => URL.revokeObjectURL(previewUrl)
   }, [imageLink])
 
-    
     const handleSubmit = async (e) => {
-
       
     }
     
     return ( 
-    <div className='content'>  
-      <section>  
+    <div className="admin-outer">
+      <div className="admin-toprow">
         <div className="form-container">
-        <h2>Create/Edit Resource</h2>
-        {/* {error && revealErr()} */}
-        <form id="resourceForm" onSubmit={handleSubmit}>
+          <h2>Create/Edit Resource</h2>
+          {/* {error && revealErr()} */}
+          <form id="resourceForm" onSubmit={handleSubmit}>
+          <div className="resource-select">edit-resource
+            <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
+                <option value="Desktop">Desktop</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Tablet">Tablet</option>
+                <option value="Projectors">Projector</option>
+                <option value="Cameras">Camera</option>
+                <option value="Calculator">Calculator</option>
+            </select>
+          </div>
           <div className="text-field-box">
-            <input type="text" value={resouceName} onChange={(e) => {setresouceName(e.target.value)}}/>
+            <input type="text" value={resourceName} onChange={(e) => {setresourceName(e.target.value)}}/>
             <label>Resource Name</label>
           </div>
           <div className="text-field-box">
@@ -49,56 +64,70 @@ const CreateResource = () => {
             <label>Model #</label>
           </div>
           <div className="text-field-box">
-            <input type="text" value={description} onChange={(e) => {setDescription(e.target.value)}}/>
-            <label>Description</label>
+            <input type="number" value={salePrice} onChange={(e) => {setSalePrice(e.target.value)}}/>
+            <label>Sale Price</label>
           </div>
           <div className="text-field-box">
-            <input type="number" value={price} onChange={(e) => {setPrice(e.target.value)}}/>
-            <label>Price</label>
-          </div>
-          <div className="text-field-box">
-            <input type="number" min="1" max="100" step= "1" value={numAvailible} onChange={(e) => {setnumAvailible(e.target.value)}}/>
-            <label>Availability</label>
+            <input type="number" value={borrowFee} onChange={(e) => {setBorrowFee(e.target.value)}}/>
+            <label>Borrow Fee</label>
           </div>
           <div className="text-field-box">
             <input type="file"  accept="image/*" placeholder="Upload an Image" required  onChange={(e) => {setimageLink(e.target.files[0])}}/>
             <label>Image</label>
           </div>
-
+          <div class="button-field">
+            <button type="submit" className="button">Submit</button>
+          </div>
+          </form>
+        </div>
+        <div className="preview">
+          <h2>Product Preview</h2>
+          <DisplayCard key={model} className='temp'>
+          <img  alt= {resourceName}src = {preview}></img>
+          <ItemDescriptionCard json={{
+            name: resourceName,
+            model: model,
+            salePrice: salePrice,
+            borrowFee: borrowFee,
+            image: preview
+            }}/>
+          </DisplayCard>
+        </div>
+      </div>
+      <div className="form-container">
+        <h2>Create/Edit User</h2>
+        <form id="userForm" onSubmit={handleSubmit}>
           <div className="selectForm">
-            <select from="resourceForm" onChange={(e) => {setborrowPeriod(e.target.value)}}>
-                <option value="day">1 day</option>
-                <option value="week">1 week</option>
-                <option value="twoWeek">2 weeks</option>
-                <option value="month">1 month</option>
-            </select>
-            <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
-                <option value="laptop">laptop</option>
-                <option value="pc">pc</option>
-                <option value="Accesories">accesories</option>
-                <option value="Tablet">tablet</option>
+            <select from="resourceForm" onChange={(e) => {setRole(e.target.value)}}>
+              <option value="Admin">Admin</option>
+              <option value="Worker">Worker</option>
+              <option value="Teacher">Teacher</option>
+              <option value="Student">Student</option>
             </select>
           </div>
-          <div class="button-field">
-            <button type="submit" className="button">Create</button>
+          <div className="text-field-box">
+            <input type="text" value={username} onChange={(e) => {setUsername(e.target.value)}}/>
+            <label>User Name</label>
+          </div>
+          <div className="text-field-box">
+            <input type="text" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+            <label>Password</label>
+          </div>
+          <div className="text-field-box">
+            <input type="text" value={firstname} onChange={(e) => {setFirstname(e.target.value)}}/>
+            <label>First Name</label>
+          </div>
+          <div className="text-field-box">
+            <input type="text" value={lastname} onChange={(e) => {setLastname(e.target.value)}}/>
+            <label>Last Name</label>
+          </div>
+          <div className="text-field-box">
+            <input type="number" value={funds} onChange={(e) => {setFunds(e.target.value)}}/>
+            <label>Set Funds</label>
           </div>
         </form>
-        </div>
-      </section>
-      <section className="preview">
-        <h2>Product Preview</h2>
-        <DisplayCard key={model} className='temp'>
-        <img  alt= {resouceName}src = {preview}></img>
-        <ItemDescriptionCard json={{
-            name: resouceName,
-              model: model,
-              price: price,
-              stock: numAvailible + " Availability",
-              image: preview
-        }}/>
-        </DisplayCard>
-      </section>  
-      </div> 
+      </div>
+    </div>
     );
 }
  

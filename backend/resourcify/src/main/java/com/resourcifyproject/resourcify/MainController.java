@@ -7,6 +7,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ public class MainController {
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder =  new BCryptPasswordEncoder();
 
     public void updateQuantity(int resource_id) {
         Resource r = resourcerepository.findById(resource_id).get();
@@ -110,6 +111,9 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/item")
     public @ResponseBody String addNewItem (@RequestBody JsonNode payload) {
+        if ( !itemRepository.getItemsBySerialNumber(  payload.get("resource_id").asInt(), payload.get("serial_number").asText()  ).get().isEmpty() ) {
+            return "An Item With That Serial Number Already Exists For That Resource";
+        }
         Resource r = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         Item i = new Item();
         i.setResource(r);
@@ -191,16 +195,19 @@ public class MainController {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         Resource resource = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         if ( user.getAvailableFunds() < resource.getSalePrice() ) {
-            throw new ForbiddenException(); //They don't have enough money
+            throw new ArithmeticException(); //They don't have enough money
         }
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(),  ItemType.SALE.name(), true  ) < 1 ) {
-            throw new ArithmeticException(); //There is not an item available to purchase
+            throw new ResourceNotFoundException(); //There is not an item available to purchase
         }
         Item itemToPurchase = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.SALE.name(), true  ).get();
         itemToPurchase.setAvailable(false);
         itemToPurchase.setUsername(user.getUsername());
         itemToPurchase.setTransactionPrice(resource.getSalePrice());
         itemToPurchase.setTransactionTime(LocalDateTime.now());
+        user.setAvailableFunds( user.getAvailableFunds() - resource.getSalePrice() );
+        itemRepository.save(itemToPurchase);
+        userRepository.save(user);
         updateQuantity(payload.get("resource_id").asInt());
         return "Purchase Successful!";
     }
@@ -211,10 +218,13 @@ public class MainController {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         Resource resource = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         if ( user.getAvailableFunds() < resource.getBorrowPrice() ) {
-            throw new ForbiddenException(); //They don't have enough money
+            throw new ArithmeticException(); //They don't have enough money
         }
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ) < 1 ) {
-            throw new ArithmeticException(); //There is not an item available to borrow
+            throw new ResourceNotFoundException(); //There is not an item available to borrow
+        }
+        if ( user.getRole() == Role.STUDENT && itemRepository.getItemsByUsername(  payload.get("username").asText(), ItemType.BORROW.name()  ).get().size() >= 3 ) {
+            throw new ForbiddenException(); //The Student is already borrowing 3 items
         }
         Item itemToBorrow = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ).get();
         itemToBorrow.setAvailable(false);
@@ -222,6 +232,9 @@ public class MainController {
         itemToBorrow.setTransactionPrice(resource.getBorrowPrice());
         itemToBorrow.setTransactionTime(LocalDateTime.now());
         itemToBorrow.setBorrowTime(payload.get("borrow_time").asLong());
+        user.setAvailableFunds( user.getAvailableFunds() - resource.getBorrowPrice() );
+        itemRepository.save(itemToBorrow);
+        userRepository.save(user);
         updateQuantity(payload.get("resource_id").asInt());
         return "Borrow Successful!";
     }
@@ -233,6 +246,9 @@ public class MainController {
         item.setTransactionTime(null);
         item.setTransactionPrice(null);
         item.setBorrowTime(null);
+        item.setUsername(null);
+        item.setAvailable(true);
+        itemRepository.save(item);
         updateQuantity(payload.get("resource_id").asInt());
         return "Return Successful!";
     }
