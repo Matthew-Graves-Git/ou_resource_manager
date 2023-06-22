@@ -45,23 +45,25 @@ const filterResources = (all) =>{
   )))
 }
 
-  async function postAll(array, cat){
-    for(const element of array) {
-      await ResourcifyApi.createAll(
-            {
+  async function postAll(array, cat) {
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      await ResourcifyApi.createOrEditResource({
         ...element,
         resource_category: cat,
-        sale_price: "199.00",
         description: "",
-        request_type: "create"
+        request_type: "create",
+        stock: "1 Available"
       });
+      await ResourcifyApi.restockItem({ resource_id: i+1, item_type: "BORROW", serial_number: "S9876543210" });
+      await ResourcifyApi.restockItem({ resource_id: i+1, item_type: "SALE", serial_number: "S9876543211" });
     }
   }
 
   const hasStuffInDatabase = async () => {
     // Check if there are resources in the "DESKTOP" category
     const resources = await ResourcifyApi.getResources({resource_category:"DESKTOP"});
-    if (!resources.data || resources.data.length === 0) {
+    if (resources.data.length === 0) {
       await postAll(laptop,"LAPTOP");
       await postAll(pc,"DESKTOP");
       await postAll(tablets,"TABLET");
@@ -69,7 +71,14 @@ const filterResources = (all) =>{
       await ResourcifyApi.createOrEditUser("create","ADMIN","admin","admin","Administrator","Test");
     }
   };
-  hasStuffInDatabase();
+
+  const onlyFillDatabaseOnce = async () => {
+    if (window.sessionStorage.getItem("checkedDB") !== "true") {
+      window.sessionStorage.setItem("checkedDB", "true");
+      await hasStuffInDatabase();
+    }
+  }
+  onlyFillDatabaseOnce();
 
 const handleRent = async (role,model,category) =>{
   const [id,cat] = role;

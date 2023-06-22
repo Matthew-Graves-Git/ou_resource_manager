@@ -8,7 +8,7 @@ export const ResourcifyApi = {
   IsAdmin,
   getResources,
   getQty,
-  createAll,
+  createOrEditResource,
   addToCart,
   getCart,
   addFunds,
@@ -180,7 +180,7 @@ function createOrEditUser(request_type, role, username, password, lastname, firs
     })
 }
 
-function createAll(body) {
+function createOrEditResource(body) {
   return instance.post('demo/add/resource', body, {
     headers: {"Access-Control-Allow-Origin": '*'},
       proxy: {
