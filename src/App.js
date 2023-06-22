@@ -5,7 +5,6 @@ import Login from './Pages/Login';
 import { AuthProvider } from './Authentification/Auth';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Laptop from "./Pages/Laptop";
-import Product from "./Pages/Product";
 import Cart from './Pages/Cart';
 import {SecureRoute} from './Authentification/SecureRoute';
 import DefaultContainer from './Components/DefaultContainer';
@@ -119,7 +118,6 @@ window.onbeforeunload = function() {
             </Route>
             <Route element={<DefaultContainer/>}>
               <Route exact path='/Home' element={<SecureRoute><Home assets={prop}/></SecureRoute>} />
-              <Route exact path='/Products' element={<SecureRoute><Product assets={prop}/></SecureRoute>} />
               <Route exact path='/PCs' element={<SecureRoute><PC assets={propP}/></SecureRoute>} />
               <Route exact path='/Accesories' element={<SecureRoute><Accesories assets={propA}/></SecureRoute>} />
               <Route exact path='/Tablets' element={<SecureRoute><Tablet assets={propT}/></SecureRoute>} />
