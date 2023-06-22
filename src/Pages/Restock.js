@@ -52,6 +52,7 @@ const restockItem = async (e) => {
                 <label><input type="radio" value="sales" onClick={e=>settype("SALE")} name="type" checked />For Sale</label>
                 <label><input type="radio" value="rent" name="type" onClick={e=>settype("BORROW")}/>For Borrowing</label>
 
+
           </div>
           <div class="button-field">
             <button type="submit" className="button">Submit</button>

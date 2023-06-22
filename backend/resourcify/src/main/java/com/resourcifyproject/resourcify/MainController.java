@@ -23,11 +23,8 @@ public class MainController {
     private ResourceRepository resourcerepository;
     @Autowired
     private ItemRepository itemRepository;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
-    public PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    @Autowired
+    private PasswordEncoder passwordEncoder =  new BCryptPasswordEncoder();
 
     public void updateQuantity(int resource_id) {
         Resource r = resourcerepository.findById(resource_id).get();
