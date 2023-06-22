@@ -1,39 +1,89 @@
-import React from 'react';
 import '../Components/css/style.css';
 import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
-import placeholder from '../Images/placeholder-image.png';
 import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { IsAdmin } from '../Authentification/SecureRoute';
+import { ResourcifyApi } from '../Authentification/ResourcifyApi';
 
 const Product = (props) => {
 
+  function importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
+  }
 
-  
+  const images = importAll(require.context('../Images', false, /\.(png|gif|jpe?g|svg)$/));
+  const [items,setItems] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  let admin = IsAdmin();
+
+  useEffect(() => {
+    if (admin && admin !== undefined && admin !== null) {
+        setIsAdmin(admin);
+    }
+  }, [admin]);
+
+  useEffect( () => {
+    //postAll(laptops,"LAPTOP")
+    //postAll(pc,"DESKTOP")
+    // postAll(tablets,"TABLET")
+    // postAll(accesorie,"CALCULATOR")
+    const all = [];
+    async function getResourceQty(id){
+      const stock = await ResourcifyApi.getQty(id);
+      return stock.data;
+    }
+    async function getResources(category){
+      const resources = await ResourcifyApi.getAllItems({resource_category:category});
+      if(resources){
+        resources.data.forEach( async (item) => {
+          //const stock = await getResourceQty(item.resourceId)
+          all.push({
+            name: item.name,
+            model: item.modelNumber,
+            price: item.borrowPrice,
+            stock: 1,
+            image: images[item.image],
+            role: [item.resourceId,item.resourceCategory]
+        })
+      });
+    }
+    setItems(all);
+    }
+    getResources('ALL');
+  }, [] );
+
   return (
     <div className='content'>
       <h1>All Products</h1>
       <div className='filter'>
-            <input type="text" placeholder="Search product"/><button>Search</button>
-            <div className="filterMenu">
-                <button className="selected">All</button>
-                <Link to="/Pens"><button>Pens</button></Link>
-                <Link to="/Patches"><button>Patches</button></Link>
-                <Link to="/Monitors"><button>Monitors</button></Link>
-            </div>
+        <input type="text" placeholder="Search product"/><button>Search</button>
+        <div className="filterMenu">
+            <button className="selected">All</button>
+            <Link to="/PCs"><button>PC</button></Link>
+            <Link to="/Laptops"><button>Laptops</button></Link>
+            <Link to="/Tablets"><button>Tablets</button></Link>
+            <Link to="/Accesories"><button>Accessories</button></Link>
+        </div>
       </div>
 
       <div className='hole'>
-        <div className="row">
-          {props.assets.items.map((item) => {return (
+          <div className="row">
+          {items && items.map((item) => {return (
           <div className="column">
           <DisplayCard key={item.model} className='temp'>
           <img alt={item.name} src={item.image}></img>
           <ItemDescriptionCard json={item}/>
-          <button className='Item-button'onClick={() => props.assets.handleRent(item.model, props.assets.cat)}>+ Rent</button>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
+          <button className='Item-button'>Buy</button>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
+          <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
           </DisplayCard>
           </div>
-        )})}
-        </div>
+          )})}
+          </div>
       </div>
     </div>
   );

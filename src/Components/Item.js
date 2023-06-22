@@ -3,7 +3,7 @@ const Item = (props) => {
     const createItem = () =>{
         if(props.item === 'image' || props.item === 'role' ){
             return ''
-        }else if(props.item === 'borrow_price'){
+        }else if(props.item === 'price'){
             return `$${props.data}`;
         }else if(props.item === 'stock'){
             return `${props.data}`;
@@ -14,7 +14,7 @@ const Item = (props) => {
 
         if(props.item === 'stock'){
             return 'availiable'
-        }else if(props.item === 'borrow_price'){
+        }else if(props.item === 'price'){
             return 'price';
         }
         return "Item-text";

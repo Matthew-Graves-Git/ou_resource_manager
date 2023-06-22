@@ -30,7 +30,7 @@ code {
 }
 
 .content {
-  padding: 30px 100px 100px 100px;
+  padding: 10px 100px 100px 100px;
 }
 
 button {
@@ -48,6 +48,13 @@ button:hover {
   cursor: pointer;
 }
 
+.find-username input[type=text] {
+  padding: 10px 10px;
+  font-size: 16px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 .row:after {
   content: "";
   display: table;
@@ -58,4 +65,101 @@ button:hover {
   float: left;
   width: 31%;
   padding: 10px;
+}
+
+.form-container {
+  width: 500px;
+  padding: 40px;
+  margin: 0 auto;
+  background: #ebd3cc;
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
+}
+
+.form-container h2 {
+margin: 0 0 30px;
+padding: 0;
+text-align: center;
+}
+
+.form-container .text-field-box {
+position: relative;
+}
+
+.form-container .text-field-box input {
+width: 100%;
+padding: 10px 0;
+font-size: 16px;
+margin-bottom: 30px;
+border: none;
+border-bottom: 1px solid #a40202;
+outline: none;
+background: transparent;
+}
+
+.form-container .text-field-box label {
+position: absolute;
+top:-20px;
+left: 0;
+padding: 10px 0;
+font-size: 12px;
+}
+
+.form-container .selectForm {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-container .selectForm select {
+  padding: 10px 20px;
+  margin-right: 20px;
+}
+
+.form-container p{
+  padding: 10px 0;
+}
+
+.form-container .button {
+position: relative;
+border: none;
+font-size: 20px;
+margin-right: 5px;
+padding: 5px;
+width: 150px;
+height: 50px;
+text-align: center;
+transition-duration: 0.4s;
+text-decoration: none;
+overflow: hidden;
+cursor: pointer;
+}
+
+.form-container .button:after {
+content: "";
+display: block;
+position: absolute;
+padding-top: 300%;
+padding-left: 350%;
+margin-left: -20px !important;
+opacity: 0;
+transition: all 0.7s;
+}
+
+.form-container .button:active:after {
+padding: 0;
+margin: 0;
+opacity: 1;
+transition: 0s
+}
+
+.form-container .button-field {
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-container .radio-field-box {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
 }

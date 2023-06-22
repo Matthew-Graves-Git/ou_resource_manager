@@ -5,8 +5,8 @@ import Login from './Pages/Login';
 import { AuthProvider } from './Authentification/Auth';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Laptop from "./Pages/Laptop";
+import Product from "./Pages/Product";
 import Cart from './Pages/Cart';
-import Product from './Pages/Product';
 import {SecureRoute} from './Authentification/SecureRoute';
 import DefaultContainer from './Components/DefaultContainer';
 import LoginContainer from './Components/LoginContainer';
@@ -17,6 +17,9 @@ import SignUp from './Pages/SignUp';
 import CreateResource from './Pages/Admin/CreateResource';
 import { ResourcifyApi } from './Authentification/ResourcifyApi';
 import AddFunds from './Pages/Admin/AddFunds';
+import Restock from './Pages/Restock';
+import Profile from './Pages/Profile';
+import Return from './Pages/Return';
 
 function App() {
   function importAll(r) {
@@ -123,6 +126,9 @@ window.onbeforeunload = function() {
               <Route exact path='/Laptops' element={<SecureRoute><Laptop assets={propL}/></SecureRoute>} />
               <Route exact path='/Cart' element={<SecureRoute><Cart assets={cartProps}/></SecureRoute>} />
               <Route exact path='/Funds' element={<SecureRoute><AddFunds/></SecureRoute>} />
+              <Route exact path='/Restock' element={<SecureRoute><Restock/></SecureRoute>} />
+              <Route exact path='/Profile' element={<SecureRoute><Profile/></SecureRoute>} />
+              <Route exact path='/Return' element={<SecureRoute><Return/></SecureRoute>} />
               <Route exact path='/CreateResource' element={<SecureRoute><CreateResource/></SecureRoute>} />
             </Route>
           </Routes>

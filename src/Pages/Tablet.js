@@ -5,6 +5,7 @@ import DisplayCard from '../Components/DisplayCard';
 import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 import './home.css'
 import '../Components/css/style.css';
+import { IsAdmin } from '../Authentification/SecureRoute';
 
 const Tablet = (props) => {
 
@@ -18,6 +19,15 @@ const Tablet = (props) => {
 
 
 const [items,setItems] = useState([]);
+const [isAdmin, setIsAdmin] = useState(false);
+
+  let admin = IsAdmin();
+
+  useEffect(() => {
+      if (admin && admin !== undefined && admin !== null) {
+          setIsAdmin(admin);
+      }
+    }, [admin]);
 
 useEffect( () => {
     //postAll(laptops,"LAPTOP")
@@ -55,7 +65,7 @@ useEffect( () => {
       <div className='filter'>
             <input type="text" placeholder="Search product"/><button>Search</button>
             <div className="filterMenu">
-                <Link to="/Home"><button>All</button></Link>
+                <Link to="/Products"><button>All</button></Link>
                 <Link to="/PCs"><button>PC</button></Link>
                 <Link to="/Laptops"><button>Laptops</button></Link>
                 <button className="selected">Tablets</button>
@@ -70,7 +80,9 @@ useEffect( () => {
           <DisplayCard key={item.model} className='temp'>
           <img  alt= {item.name}src = {item.image}></img>
           <ItemDescriptionCard json={item}/>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'>Buy</button>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
           <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
           </DisplayCard>
           </div>

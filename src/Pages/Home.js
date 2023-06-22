@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import { ResourcifyApi } from '../Authentification/ResourcifyApi';
-import DisplayCard from '../Components/DisplayCard';
-import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 import './home.css'
 import '../Components/css/style.css';
 
@@ -47,8 +45,6 @@ const Home = (props) => {
         setItems(all);
       }
        getResources('ALL');
-      
-      
     }, [] );
     
 
@@ -56,40 +52,28 @@ const Home = (props) => {
     return (
         <div>
             <header className="header">
-                <h1>Welcome to Maple University</h1>
-                <h2>We provide various products to fulfill technology needs.</h2>
+                <h1>Resource Store & Rental</h1>
+                <h2>Providing students various products to fulfill technology needs.</h2>
 
-                <a href="#all_products">
+                <Link to="/Products">
                     <button><b>Explore Product</b></button>
-                </a>
+                </Link>
             </header>
             <div className="content">
-                <h1 id="all_products">All Products</h1>
-                <div className='filter'>
-                        <input type="text" placeholder="Search product"/><button>Search</button>
-                        <div className="filterMenu">
-                            <button className="selected">All</button>
-                            <Link to="/PCs"><button>PC</button></Link>
-                            <Link to="/Laptops"><button>Laptops</button></Link>
-                            <Link to="/Tablets"><button>Tablets</button></Link>
-                            <Link to="/Accesories"><button>Accessories</button></Link>
-                        </div>
+              <div className="home-content">
+                <div className="content-row">
+                  <h3>Store Information</h3>
+                  <p><b>Location:</b> 444 S. Cedros Ave<br /> Solana Beach, California</p>
+                  <p><b>Operating hours:</b> 8am - 6pm, Monday to Saturday</p>
                 </div>
-
-                <div className='hole'>
-                    <div className="row">
-                    {items && items.map((item) => {return (
-                    <div className="column">
-                    <DisplayCard key={item.model} className='temp'>
-                    <img alt={item.name} src={item.image}></img>
-                    <ItemDescriptionCard json={item}/>
-                    <button className='Item-button'>Buy</button>
-                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
-                    </DisplayCard>
-                    </div>
-                    )})}
-                    </div>
+                <div className="content-row">
+                  <h3>Basic Information</h3>
+                  <ul className="information">
+                    <li>You can only add funds in person at our store.</li>
+                    <li>You can only borrow 3 items at a time.</li>
+                  </ul>
                 </div>
+              </div>
             </div>
         </div>
     );
