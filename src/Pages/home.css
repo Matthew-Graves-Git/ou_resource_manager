@@ -6,3 +6,21 @@
 .header button {
     margin-top: 40px;
 }
+
+.home-content {
+    display: flex;
+}
+
+.content-row {
+    border-radius: 5px;
+    border: 1px solid brown;
+    width: 50%;
+    padding: 0 20px;
+    margin: 10px;
+    background-color: white;
+}
+
+.content-row h3 {
+    color: #a40202;
+    text-align: center;
+}

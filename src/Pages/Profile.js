@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import '../Pages/profile.css';
+import DisplayCard from '../Components/DisplayCard';
 
 const Profile = () => {
 
@@ -14,59 +15,95 @@ const Profile = () => {
         setIsOpen(false);
     }
 
+    function importAll(r) {
+        let images = {};
+        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+        return images;
+    }
+    
+    const images = importAll(require.context('../Images', false, /\.(png|gif|jpe?g|svg)$/));
+
+
+    const [items, setItems] = useState([
+        {
+            name: "Item 1",
+            model: "Item 1 Model",
+            price: "100",
+            stock: 1,
+            image: images["tablet-2.png"],
+            role: [123,1]
+        },
+        {
+            name: "Item 2",
+            model: "Item 2 Model",
+            price: "200",
+            stock: 2,
+            image: images["acc-1.png"],
+            role: [123,1]
+        },
+        {
+            name: "Item 3",
+            model: "Item 3 Model",
+            price: "300",
+            stock: 3,
+            image: images["laptop.png"],
+            role: [123,1]
+        }
+    ]);
+
     return ( 
         <div className="content">
-            <h1>My Account</h1>
+            <h1>Account</h1>
             <div className="profile-content">
                 <div className="profile-section">
-                    <p><b>Funds available:</b> $100</p>
+                    <button className="button" onClick={openModal}>Change Password</button>
+                    <p><span className="funds">Funds available: </span><span className="fund-amount">$100</span></p>
+                </div>
+                <div className="history-section">
                     <div className="history-select">
-                        <b>History:</b>
+                        <b>View:</b>
                         <select from="history" onChange={(e) => {setHistoryType(e.target.value)}}>
-                            <option value="rent">Borrow History</option>
-                            <option value="buy">Purchase History</option>
+                            <option value="rent">Borrowed Items</option>
+                            <option value="buy">Purchased Items</option>
                         </select>
                     </div>
-                    <button className="button" onClick={openModal}>Change Password</button>
-                </div>
-                <div class="profile-section">
                     {historyType === 'buy' ? 
                     (<div className="history-list">
-                        <p><b>Purchased Item</b></p>
-                        <div className="items">
-                            <div className="field">
-                                <label>Item Name:</label> Name
-                            </div>
-                            <div className="field">
-                                <label>Price:</label> $100
-                            </div>
-                        </div>
-                        <div className="items">
-                            <div className="field">
-                                <label>Item Name:</label> Name
-                            </div>
-                            <div className="field">
-                                <label>Price:</label> $100
+                        <h2><b>Purchased Item</b></h2>
+                        <div className='hole'>
+                            <div className="row">
+                                {items && items.map((item) => {return (
+                                <div className="column">
+                                <DisplayCard key={item.model} className='temp'>
+                                <img alt={item.name} src={item.image}></img>
+                                <div className='ItemDescriptionCard'>
+                                    <p className="Item-text"><b>{item.name}</b></p>
+                                    <p className="Item-text">{item.model}</p>
+                                    <p className="price">${item.price}</p>
+                                </div>
+                                </DisplayCard>
+                                </div>
+                                )})}
                             </div>
                         </div>
                     </div>) 
                     : 
                     (<div className="history-list">
-                        <p><b>Borrowed Item</b></p>
-                        <div className="items">
-                            <div className="field">
-                                <label>Item Name:</label> Name
-                            </div>
-                            <div className="field">
-                                <label>Price:</label> $100
-                            </div>
-                        </div>
-                        <div className="items">
-                            <div className="field">
-                                <label>Item Name:</label> Name
-                            </div>
-                            <div className="field">
-                                <label>Price:</label> $100
+                        <h2><b>Borrowed Item</b></h2>
+                        <div className='hole'>
+                            <div className="row">
+                                {items && items.map((item) => {return (
+                                <div className="column">
+                                <DisplayCard key={item.model} className='temp'>
+                                <img alt={item.name} src={item.image}></img>
+                                <div className='ItemDescriptionCard'>
+                                    <p className="Item-text"><b>{item.name}</b></p>
+                                    <p className="Item-text">{item.model}</p>
+                                    <p className="price">${item.price}</p>
+                                </div>
+                                </DisplayCard>
+                                </div>
+                                )})}
                             </div>
                         </div>
                     </div>)}
@@ -94,7 +131,7 @@ const Profile = () => {
                             <input type="password" value="" onChange=""/>
                             <label>Repeat Password</label>
                         </div>
-                        <div class="button-field">
+                        <div className="button-field">
                             <button type="submit" className="button">Submit</button>
                         </div>
                         </form>

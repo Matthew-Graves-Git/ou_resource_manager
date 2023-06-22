@@ -22,7 +22,7 @@ const Restock = () => {
                 <label><input type="radio" value="sales" name="type" checked /> Sales</label>
                 <label><input type="radio" value="rent" name="type" /> Rent</label>
           </div>
-          <div class="button-field">
+          <div className="button-field">
             <button type="submit" className="button">Submit</button>
           </div>
         </form>

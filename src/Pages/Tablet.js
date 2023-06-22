@@ -19,7 +19,16 @@ const Tablet = (props) => {
 
 
 const [items,setItems] = useState([]);
-let cred = false
+const [isAdmin, setIsAdmin] = useState(false);
+
+  let admin = IsAdmin();
+
+  useEffect(() => {
+      if (admin && admin !== undefined && admin !== null) {
+          setIsAdmin(admin);
+      }
+    }, [admin]);
+
 useEffect( () => {
     //postAll(laptops,"LAPTOP")
     //postAll(pc,"DESKTOP")
@@ -56,7 +65,7 @@ useEffect( () => {
       <div className='filter'>
             <input type="text" placeholder="Search product"/><button>Search</button>
             <div className="filterMenu">
-                <Link to="/Home"><button>All</button></Link>
+                <Link to="/Products"><button>All</button></Link>
                 <Link to="/PCs"><button>PC</button></Link>
                 <Link to="/Laptops"><button>Laptops</button></Link>
                 <button className="selected">Tablets</button>
@@ -65,25 +74,21 @@ useEffect( () => {
       </div>
 
       <div className='hole'>
-                    <div className="row">
-                    {cred = IsAdmin()}
-                    {items && items.map((item) => {return (
-                      
-                    <div className="column">
-                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
-                    <DisplayCard key={item.model} className='temp'>
-                    <img alt={item.name} src={item.image}></img>
-                    
-                    <ItemDescriptionCard json={item}/>
-                    
-                    <button className='Item-button'>Buy</button>
-                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
-                    
-                    </DisplayCard>
-                    </div>
-                    )})}
-                    </div>
-                </div>
+        <div className="row">
+          {items && items.map((item) => {return (
+          <div className="column">
+          <DisplayCard key={item.model} className='temp'>
+          <img  alt= {item.name}src = {item.image}></img>
+          <ItemDescriptionCard json={item}/>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
+          <button className='Item-button'>Buy</button>
+          {isAdmin ? <button className="restock"><Link to="/Restock">Restock</Link></button> : <></>}
+          <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
+          </DisplayCard>
+          </div>
+        )})}
+        </div>
+      </div>
     </div>
   );
 }

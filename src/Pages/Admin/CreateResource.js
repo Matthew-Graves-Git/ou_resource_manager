@@ -79,7 +79,7 @@ const CreateResource = () => {
                 <option value="Tablet">tablet</option>
             </select>
           </div>
-          <div class="button-field">
+          <div className="button-field">
             <button type="submit" className="button">Create</button>
           </div>
         </form>

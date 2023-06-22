@@ -39,12 +39,17 @@
   }
 
   .profile-content {
-    display: flex;
-    flex-direction: row;
+    display: block;
   }
 
   .profile-content .profile-section {
-    width: 50%;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+  .profile-content .history-section {
+    width: 100%;
+    text-align: center;
   }
 
   .history-select select {
@@ -64,4 +69,14 @@
   .history-list .items .field {
     display: block;
     margin-bottom: 10px;
+  }
+
+  .funds {
+    font-weight: 500;
+    color: brown;
+    font-size: 20px;
+  }
+  
+  .fund-amount {
+    font-size: 20px;
   }
