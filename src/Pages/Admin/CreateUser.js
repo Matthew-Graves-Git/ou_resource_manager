@@ -22,7 +22,8 @@ const CreateUser = () => {
         username:username,
         password:password,
         lastname:lastname,
-        firstname:firstname
+        firstname:firstname,
+        funds:funds
         }).then(res=>{
         setUsername("")
         setPassword("")

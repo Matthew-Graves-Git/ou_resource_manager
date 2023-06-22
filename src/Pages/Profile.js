@@ -105,7 +105,7 @@ const Profile = () => {
             <h1>My Account</h1>
             <div className="profile-content">
                 <div className="profile-section">
-                    <p><b>Funds available:</b> ${user}.00</p>
+                    <p><b>Funds available:</b> ${user}</p>
                     <div className="history-select">
                         <b>History:</b>
                         <select from="history" onChange={(e) => {setHistoryType(e.target.value)}}>
@@ -126,7 +126,7 @@ const Profile = () => {
                                 <label>Item Name:</label> {item.name}
                             </div>
                             <div className="field">
-                                <label>Price:</label> ${item.price}.00;
+                                <label>Price:</label> ${item.price};
                             </div>
                         </div>
                         )})}
@@ -134,7 +134,7 @@ const Profile = () => {
                     </div>) 
                     : 
                     (<div className="history-list">
-                        <p><b>Borrowed Item</b></p>
+                        <p><b>Current Rentals</b></p>
                         {itemsError && <p>{itemsError}</p>}
                         {items && items.map((item) =>{return(
                         <div className="items">
@@ -142,7 +142,7 @@ const Profile = () => {
                                 <label>Item Name:</label> {item.name}
                             </div>
                             <div className="field">
-                                <label>Price:</label> ${item.price}.00;
+                                <label>Price:</label> ${item.price};
                             </div>
                         </div>
                         )})}
@@ -183,5 +183,5 @@ const Profile = () => {
         </div>
       );
 }
- 
+
 export default Profile;

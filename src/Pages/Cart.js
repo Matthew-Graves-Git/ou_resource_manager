@@ -174,7 +174,7 @@ const Cart = (props) => {
                   <div className="Subtotal">Sub-Total</div>
                   <div className="items">{currentCart != null ? currentCart.length : 0} item(s)</div>
                 </div>
-                <div className="total-amount">{`Total: $${total}.00`}</div>
+                <div className="total-amount">{`Total: $${total}`}</div>
               </div>
               <button onClick={handleCheckout}>Checkout</button>
             </div>
