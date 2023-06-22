@@ -31,17 +31,19 @@ useEffect( () => {
       const resources = await ResourcifyApi.getAllItems({resource_category:category});
       if(resources){
         resources.data.forEach( async (item) => {
+          //const stock = await getResourceQty(item.resourceId)
           all.push({
             name: item.name,
             model: item.modelNumber,
             price: item.borrowPrice,
-            stock: 1,
+            stock: item.quantityBorrow + item.quantitySale,
+            stockSale: item.quantitySale,
             image: images[item.image],
             role: [item.resourceId,item.resourceCategory]
           })
         });
       }
-        setItems(all);
+      setItems(all);
     }
      getResources('CALCULATOR');
   }, [] );
@@ -66,7 +68,7 @@ useEffect( () => {
                     {items && items.map((item) => {return (
                       
                     <div className="column">
-                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
+                      {cred && <button className="restock"><Link to="/Restock" state={{ id: item.role[0], name:item.name}}>Restock</Link></button>}
                     <DisplayCard key={item.model} className='temp'>
                     <img alt={item.name} src={item.image}></img>
                     

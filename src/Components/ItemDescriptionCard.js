@@ -8,6 +8,7 @@ const ItemDescriptionCard = (props) => {
     return(
         <div className='ItemDescriptionCard'>
             {Object.entries(props.json).map(([propName,propData]) => {
+                if(propName !== 'stockSale')
                 return <Item key = {propName} item={propName} data = {propData}></Item>
             })}
             

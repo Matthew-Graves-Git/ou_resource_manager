@@ -11,7 +11,17 @@ export const ResourcifyApi = {
   createAll,
   addToCart,
   getCart,
-  addFunds
+  addFunds,
+  deleteAllCart,
+  rent,
+  updatePassword,
+  getUser,
+  getBorrowed,
+  getPurchased,
+  restockItem,
+  purchase,
+  getItemsByUsername,
+  returnItem
 }
 
 function authenticate(username, password) {
@@ -55,6 +65,17 @@ function addFunds(username,funds) {
       },
   })
 }
+function restockItem(body) {
+  console.log(body)
+  return instance.post('/demo/add/item',body, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
 
 function getCart() {
   return instance.get('/demo/get/cart', {
@@ -69,6 +90,39 @@ function getCart() {
 
 function addToCart(id) {
   return instance.post('/demo/do/cart_add',{resource_id:id}, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function deleteAllCart(req) {
+  return instance.post('/demo/do/cart_remove',req, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function rent(req) {
+  return instance.post('/demo/do/borrow',req, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function purchase(req) {
+  return instance.post('/demo/do/purchase',req, {
     headers: {"Access-Control-Allow-Origin": '*'},
       proxy: {
           protocol: 'http',
@@ -127,6 +181,72 @@ function signup(firstName, lastName,username, password) {
 
 function createAll(body) {
   return instance.post('demo/add/resource', body, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function updatePassword(body){
+  return instance.post('demo/do/update_password', body, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function returnItem(body){
+  return instance.post('demo/do/return', body, {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function getUser(){
+  return instance.get('demo/get/user', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function getBorrowed(){
+  return instance.get('demo/get/user/borrowed', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function getPurchased(){
+  return instance.get('demo/get/user/purchased', {
+    headers: {"Access-Control-Allow-Origin": '*'},
+      proxy: {
+          protocol: 'http',
+          host: '127.0.0.1',
+          port: 8080,
+      },
+  })
+}
+
+function getItemsByUsername(req){
+  return instance.post('demo/find/user/borrowed',req, {
     headers: {"Access-Control-Allow-Origin": '*'},
       proxy: {
           protocol: 'http',

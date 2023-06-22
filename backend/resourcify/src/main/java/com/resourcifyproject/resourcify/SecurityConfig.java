@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/demo/add/**").permitAll()
                         .requestMatchers("/demo/get/**").permitAll()
                         .requestMatchers("/demo/do/**").permitAll()
+                        .requestMatchers("/demo/find/**").permitAll()
                         .requestMatchers("/demo/confirm").permitAll()
                         .requestMatchers("/demo/all")
                         .authenticated()

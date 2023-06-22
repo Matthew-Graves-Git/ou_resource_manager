@@ -39,13 +39,14 @@ useEffect( () => {
             name: item.name,
             model: item.modelNumber,
             price: item.borrowPrice,
-            stock: 1,
+            stock: item.quantityBorrow + item.quantitySale,
+            stockSale: item.quantitySale,
             image: images[item.image],
             role: [item.resourceId,item.resourceCategory]
           })
         });
       }
-        setItems(all);
+      setItems(all);
     }
      getResources('TABLET');
   }, [] );
@@ -70,7 +71,7 @@ useEffect( () => {
                     {items && items.map((item) => {return (
                       
                     <div className="column">
-                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
+                      {cred && <button className="restock"><Link to="/Restock" state={{ id: item.role[0], name:item.name}}>Restock</Link></button>}
                     <DisplayCard key={item.model} className='temp'>
                     <img alt={item.name} src={item.image}></img>
                     

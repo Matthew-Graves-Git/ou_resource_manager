@@ -134,6 +134,22 @@ const CreateResource = () => {
             <label>Set Funds</label>
           </div>
         </form>
+        </div>
+      </section>
+      <section className="preview">
+        <h2>Product Preview</h2>
+        <DisplayCard key={model} className='temp'>
+        <img  alt= {resouceName}src = {preview}></img>
+        <ItemDescriptionCard json={{
+            name: resouceName,
+              model: model,
+              price: price,
+              stock: numAvailible + " In Stock",
+              image: preview
+        }}/>
+        </DisplayCard>
+      </section>  
+      </div> 
       </div>
     </div>
     );
