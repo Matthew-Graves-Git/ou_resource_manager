@@ -50,7 +50,7 @@ const Funds = () => {
             <input type="number" value={funds} onChange={(e) => {setFunds(e.target.value)}}/>
             <label>Amount</label>
           </div>
-          <div class="button-field">
+          <div className="button-field">
             <button type="submit" className="button">Add</button>
           </div>
         </form>
