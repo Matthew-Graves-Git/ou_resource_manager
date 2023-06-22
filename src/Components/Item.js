@@ -11,11 +11,11 @@ const Item = (props) => {
         }else if(props.item === 'model'){
             return `Model: ${props.data}`;
         }else if(props.item === 'price'){
-            return `$${props.data}.00`;
+            return `$${props.data}`;
         }else if(props.item === 'salePrice'){
-            return `$${props.data}.00`;
+            return `$${props.data}`;
         }else if(props.item === 'borrowFee'){
-            return `$${props.data}.00`;
+            return `$${props.data}`;
         }
         return props.data;
     }

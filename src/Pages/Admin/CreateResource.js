@@ -8,10 +8,10 @@ import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
 const CreateResource = () => {
     const [type, setType] = useState();
     const [resourceID, setresourceID] = useState();
-    const [model, setmodel] = useState();
+    const [model, setmodel] = useState("");
     const [imageLink, setimageLink] = useState();
-    const [salePrice, setSalePrice] = useState();
-    const [borrowFee, setBorrowFee] = useState();
+    const [salePrice, setSalePrice] = useState("");
+    const [borrowFee, setBorrowFee] = useState("");
     const [name, setname] = useState();
     const [createEdit, setcreateEdit] = useState();
     const [error, seterror] = useState();
@@ -102,7 +102,7 @@ const CreateResource = () => {
             <label>Resource Name</label>
           </div>
           <div className="text-field-box">
-            <input type="text" value={resourceID} onChange={(e) => {setresourceID(e.target.value)}}/>
+            {createEdit === "create" ? <input type="text" value={resourceID} onChange={(e) => {setresourceID(e.target.value)}}/> : <input value="" disabled={true}></input>}
             <label>Resource ID</label>
           </div>
           <div className="text-field-box">
@@ -138,59 +138,6 @@ const CreateResource = () => {
             }}/>
           </DisplayCard>
         </div>
-      </div>
-      <div className="admin-outer">
-      <div className="admin-toprow">
-      <div className="form-container">
-        <h2>Create/Edit User</h2>
-        <form id="userForm" onSubmit={handleSubmit}>
-          <div className="radio-field-box">
-            <label><input type="radio" value="createUser" name="type" checked />Create User</label>
-            <label><input type="radio" value="editUser" name="type" />Edit User</label>
-          </div>
-          <div className="role-select">
-            <select from="resourceForm" onChange={(e) => {setRole(e.target.value)}}>
-              <option value="Admin">Admin</option>
-              <option value="Worker">Worker</option>
-              <option value="Teacher">Teacher</option>
-              <option value="Student">Student</option>
-            </select>
-          </div>
-          <div className="text-field-box">
-            <input type="text" value={username} onChange={(e) => {setUsername(e.target.value)}}/>
-            <label>User Name</label>
-          </div>
-          <div className="text-field-box">
-            <input type="text" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
-            <label>Password</label>
-          </div>
-          <div className="text-field-box">
-            <input type="text" value={firstname} onChange={(e) => {setFirstname(e.target.value)}}/>
-            <label>First Name</label>
-          </div>
-          <div className="text-field-box">
-            <input type="text" value={lastname} onChange={(e) => {setLastname(e.target.value)}}/>
-            <label>Last Name</label>
-          </div>
-          <div className="text-field-box">
-            <input type="number" value={funds} onChange={(e) => {setFunds(e.target.value)}}/>
-            <label>Set Funds</label>
-          </div>
-        </form>
-        <div className="preview">
-          <h2>Product Preview</h2>
-          <DisplayCard key={model} className='temp'>
-          <img src = {preview}></img>
-          <ItemDescriptionCard json={{
-            model: model,
-            salePrice: salePrice,
-            borrowFee: borrowFee,
-            image: preview
-            }}/>
-          </DisplayCard>
-        </div>
-        </div>
-      </div>
       </div>
       </div>
     );

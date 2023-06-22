@@ -19,6 +19,7 @@ import Restock from './Pages/Restock';
 import Profile from './Pages/Profile';
 import Return from './Pages/Return';
 import Logout from './Pages/Logout';
+import CreateUser from './Pages/Admin/CreateUser';
 
 function App() {
   function importAll(r) {
@@ -46,6 +47,12 @@ const filterResources = (all) =>{
   )))
 }
 
+  function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
+
   async function postAll(array, cat) {
     for (let i = 0; i < array.length; i++) {
       const element = array[i];
@@ -56,8 +63,12 @@ const filterResources = (all) =>{
         request_type: "create",
         stock: "1 Available"
       });
-      await ResourcifyApi.restockItem({ resource_id: i+1, item_type: "BORROW", serial_number: "S9876543210" });
-      await ResourcifyApi.restockItem({ resource_id: i+1, item_type: "SALE", serial_number: "S9876543211" });
+      const resources = await ResourcifyApi.getResources({resource_category:cat});
+      resources.data.forEach(async (item)=>{
+        console.log({ resource_id: item.resource_id, item_type: "BORROW", serial_number: uuidv4() });
+        await ResourcifyApi.restockItem({ resource_id: item.resourceId, item_type: "BORROW", serial_number: uuidv4() });
+        await ResourcifyApi.restockItem({ resource_id: item.resourceId, item_type: "SALE", serial_number: uuidv4() });
+      })
     }
   }
 
@@ -69,7 +80,7 @@ const filterResources = (all) =>{
       await postAll(pc,"DESKTOP");
       await postAll(tablets,"TABLET");
       await postAll(accesorie,"CALCULATOR");
-      await ResourcifyApi.createOrEditUser("create","ADMIN","admin","admin","Administrator","Test");
+      await ResourcifyApi.createOrEditUser({request_type:"create",role:"ADMIN",username:"admin",password:"admin",lastname:"Administrator",firstname:"Test"});
     }
   };
 
@@ -142,6 +153,7 @@ window.onbeforeunload = function() {
               <Route exact path='/Return' element={<SecureRoute><Return/></SecureRoute>} />
               <Route exact path='/Logout' element={<SecureRoute><Logout/></SecureRoute>} />
               <Route exact path='/CreateResource' element={<SecureRoute><CreateResource/></SecureRoute>} />
+              <Route exact path='/CreateUser' element={<SecureRoute><CreateUser/></SecureRoute>} />
             </Route>
           </Routes>
       </Router>

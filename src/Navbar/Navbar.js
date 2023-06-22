@@ -32,6 +32,7 @@ const NavBar = (param) => {
                 <li><Link to="/Funds">Add Funds</Link></li>
                 <li><Link to="/Return">Return</Link></li>
                 <li><Link to="/Restock">Restock</Link></li>
+                <li><Link to="/CreateUser">Users</Link></li>
               </div>
             </li> : <></>}
             <li><Link to="/Profile">Account</Link></li>

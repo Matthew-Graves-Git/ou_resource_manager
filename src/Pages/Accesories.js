@@ -47,7 +47,6 @@ const Accesories = (props) => {
       <h1>Accessories</h1>
       <div className='filter'>
         <div className="filterMenu">
-          <Link to="/Home"><button>All</button></Link>
           <Link to="/PCs"><button>PC</button></Link>
           <Link to="/Laptops"><button>Laptops</button></Link>
           <Link to="/Tablets"><button>Tablets</button></Link>

@@ -8,6 +8,7 @@ const [serial, setserial] = useState("");
 const [id, setid] = useState(null);
 const [name, setname] = useState(null);
 const [type, settype] = useState("SALE");
+const [error, seterror] = useState();
 
 useEffect(() => {
   console.log(location.state)
@@ -25,7 +26,7 @@ const restockItem = async (e) => {
     serial_number:serial,
     item_type:type
   }).then(res =>{
-    console.log(res)
+    seterror(res.data)
     setserial("")
   })
 }
@@ -36,6 +37,7 @@ const restockItem = async (e) => {
         <div className="form-container">
         <h2>Restock</h2>
         <form onSubmit={restockItem}>
+          {error && <p>{error}</p>}
           <div className="text-field-box">
             <label>Resource ID</label>
             {id?<p>{id}</p>:<p>Click A "Restock" Button</p>}

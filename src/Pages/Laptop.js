@@ -47,7 +47,6 @@ const Laptop = (props) => {
       <h1>Laptops</h1>
       <div className='filter'>
         <div className="filterMenu">
-          <Link to="/Home"><button>All</button></Link>
           <Link to="/PCs"><button>PC</button></Link>
           <button className="selected">Laptops</button>
           <Link to="/Tablets"><button>Tablets</button></Link>

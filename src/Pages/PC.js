@@ -47,7 +47,6 @@ const PC = (props) => {
       <h1>PCs</h1>
       <div className='filter'>
         <div className="filterMenu">
-          <Link to="/Home"><button>Home</button></Link>
           <button className="selected">PCs</button>
           <Link to="/Laptops"><button>Laptops</button></Link>
           <Link to="/Tablets"><button>Tablets</button></Link>
