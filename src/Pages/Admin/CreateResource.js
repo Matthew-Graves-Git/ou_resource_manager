@@ -6,7 +6,7 @@ import './resource.css';
 import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
 
 const CreateResource = () => {
-    const [type, setType] = useState();
+    const [type, setType] = useState("DESKTOP");
     const [resourceID, setresourceID] = useState();
     const [model, setmodel] = useState("");
     const [imageLink, setimageLink] = useState();

@@ -6,7 +6,7 @@ import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
 const CreateUser = () => {
     const [error, seterror] = useState();
 
-    const [role, setRole] = useState();
+    const [role, setRole] = useState("STUDENT");
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [firstname, setFirstname] = useState();
