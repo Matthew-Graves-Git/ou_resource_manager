@@ -6,7 +6,7 @@ import './resource.css';
 
 const CreateResource = () => {
     const [type, setType] = useState();
-    const [resourceName, setresourceName] = useState();
+    const [resourceID, setresourceID] = useState();
     const [model, setmodel] = useState();
     const [imageLink, setimageLink] = useState();
     const [salePrice, setSalePrice] = useState();
@@ -45,7 +45,12 @@ const CreateResource = () => {
           <h2>Create/Edit Resource</h2>
           {/* {error && revealErr()} */}
           <form id="resourceForm" onSubmit={handleSubmit}>
-          <div className="resource-select">edit-resource
+          <div className="radio-field-box">
+            <label><input type="radio" value="create" name="type" checked />Create Resource</label>
+            <label><input type="radio" value="edit" name="type" />Edit Resource</label>
+          </div>
+          <p>Resource Name:</p>
+          <div className="resource-select">
             <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
                 <option value="Desktop">Desktop</option>
                 <option value="Laptop">Laptop</option>
@@ -56,8 +61,8 @@ const CreateResource = () => {
             </select>
           </div>
           <div className="text-field-box">
-            <input type="text" value={resourceName} onChange={(e) => {setresourceName(e.target.value)}}/>
-            <label>Resource Name</label>
+            <input type="text" value={resourceID} onChange={(e) => {setresourceID(e.target.value)}}/>
+            <label>Resource ID</label>
           </div>
           <div className="text-field-box">
             <input type="text" value={model} onChange={(e) => {setmodel(e.target.value)}}/>
