@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import { ResourcifyApi } from '../Authentification/ResourcifyApi';
+import DisplayCard from '../Components/DisplayCard';
+import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 import './home.css'
 import '../Components/css/style.css';
+import { IsAdmin } from '../Authentification/SecureRoute';
 
 const Home = (props) => {
+  const [items,setItems] = useState([]);
+  let cred = false
 
     function importAll(r) {
         let images = {};
@@ -14,19 +19,16 @@ const Home = (props) => {
     
       const images = importAll(require.context('../Images', false, /\.(png|gif|jpe?g|svg)$/));
   
-
-    const [items,setItems] = useState([]);
+    
+    
 
     useEffect( () => {
       //postAll(laptops,"LAPTOP")
       //postAll(pc,"DESKTOP")
       // postAll(tablets,"TABLET")
       // postAll(accesorie,"CALCULATOR")
+      
       const all = [];
-      async function getResourceQty(id){
-        const stock = await ResourcifyApi.getQty(id);
-        return stock.data;
-      }
       async function getResources(category){
         const resources = await ResourcifyApi.getAllItems({resource_category:category});
         if(resources){
@@ -45,35 +47,55 @@ const Home = (props) => {
         setItems(all);
       }
        getResources('ALL');
-    }, [] );
+      
+      
+    }, [cred] );
     
 
 
     return (
         <div>
             <header className="header">
-                <h1>Resource Store & Rental</h1>
-                <h2>Providing students various products to fulfill technology needs.</h2>
+                <h1>Tech Store</h1>
+                <h2>Providing students products to fulfill technology needs.</h2>
 
-                <Link to="/Products">
+                <a href="#all_products">
                     <button><b>Explore Product</b></button>
-                </Link>
+                </a>
             </header>
             <div className="content">
-              <div className="home-content">
-                <div className="content-row">
-                  <h3>Store Information</h3>
-                  <p><b>Location:</b> 444 S. Cedros Ave<br /> Solana Beach, California</p>
-                  <p><b>Operating hours:</b> 8am - 6pm, Monday to Saturday</p>
+                <h1 id="all_products">All Products</h1>
+                <div className='filter'>
+                        <input type="text" placeholder="Search product"/><button>Search</button>
+                        <div className="filterMenu">
+                            <button className="selected">All</button>
+                            <Link to="/PCs"><button>PC</button></Link>
+                            <Link to="/Laptops"><button>Laptops</button></Link>
+                            <Link to="/Tablets"><button>Tablets</button></Link>
+                            <Link to="/Accesories"><button>Accessories</button></Link>
+                        </div>
                 </div>
-                <div className="content-row">
-                  <h3>Basic Information</h3>
-                  <ul className="information">
-                    <li>You can only add funds in person at our store.</li>
-                    <li>You can only borrow 3 items at a time.</li>
-                  </ul>
+
+                <div className='hole'>
+                    <div className="row">
+                    {cred = IsAdmin()}
+                    {items && items.map((item) => {return (
+                      
+                    <div className="column">
+                      {cred && <button className="restock"><Link to="/Restock">Restock</Link></button>}
+                    <DisplayCard key={item.model} className='temp'>
+                    <img alt={item.name} src={item.image}></img>
+                    
+                    <ItemDescriptionCard json={item}/>
+                    
+                    <button className='Item-button'>Buy</button>
+                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
+                    
+                    </DisplayCard>
+                    </div>
+                    )})}
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
     );

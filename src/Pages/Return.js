@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import DisplayCard from '../Components/DisplayCard';
+import ItemDescriptionCard from '../Components/ItemDescriptionCard';
 
 const Return = () => {
 
@@ -18,7 +19,7 @@ const Return = () => {
             model: "Item 1 Model",
             price: "100",
             stock: 1,
-            image: images["acc-1.png"],
+            image: images[1],
             role: [123,1]
         },
         {
@@ -26,7 +27,7 @@ const Return = () => {
             model: "Item 2 Model",
             price: "200",
             stock: 2,
-            image: images["laptop.png"],
+            image: images[2],
             role: [123,1]
         },
         {
@@ -34,7 +35,7 @@ const Return = () => {
             model: "Item 3 Model",
             price: "300",
             stock: 3,
-            image: images["tablet-2.png"],
+            image: images[2],
             role: [123,1]
         }
     ]);
@@ -55,8 +56,8 @@ const Return = () => {
                     <DisplayCard key={item.model} className='temp'>
                     <img alt={item.name} src={item.image}></img>
                     <div className='ItemDescriptionCard'>
-                        <p className="Item-text"><b>{item.name}</b></p>
-                        <p className="Item-text">{item.model}</p>
+                        <p class="Item-text"><b>{item.name}</b></p>
+                        <p class="Item-text">{item.model}</p>
                     </div>
                     <div className="buttons-field">
                         <button className='Item-button'>Return Good</button>

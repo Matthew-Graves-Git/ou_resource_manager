@@ -5,7 +5,7 @@ import {Outlet } from "react-router-dom";
 const DefaultContainer = () => {
     return ( 
     <>
-        <Navbar isLoginPage="false" />
+        <Navbar/>
         <Outlet/>
         <Footer/>
     </> 
