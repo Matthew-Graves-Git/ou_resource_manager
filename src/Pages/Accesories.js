@@ -63,9 +63,7 @@ const Accesories = (props) => {
                 <img alt={item.name} src={item.image}></img>
                     
                 <ItemDescriptionCard json={item}/>
-                    
-                <button className='Item-button'>Buy</button>
-                <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
+                <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>+ Add</button>
               </DisplayCard>
             </div>
           )})}
