@@ -159,16 +159,8 @@ function getQty(id) {
   })
 }
 
-function createOrEditUser(request_type, role, username, password, lastname, firstname) {
-  return instance.post('/demo/add/user',
-    {
-      request_type:request_type,
-      role:role,
-      username:username,
-      password:password,
-      lastname:lastname,
-      firstname:firstname
-    },
+function createOrEditUser(body) {
+  return instance.post('/demo/add/user',body,
     {
     headers: { 'Content-type': 'application/json',
         "Access-Control-Allow-Origin": '*'},

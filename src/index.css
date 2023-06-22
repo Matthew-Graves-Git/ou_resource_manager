@@ -55,6 +55,7 @@ code {
 .admin-toprow {
   display: flex;
   flex-direction: row;
+  
 }
 
 .admin-toprow div {

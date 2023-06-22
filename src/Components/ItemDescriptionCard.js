@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../Navbar/navbar.css'
 import './css/style.css';
 import Item from './Item';
 

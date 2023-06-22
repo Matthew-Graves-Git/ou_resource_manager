@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import React from 'react';
 import cart from '../Images/red-shopping-cart.png';
 import './navbar.css'
-import { IsAdmin } from '../Authentification/SecureRoute';
+import { IsAdmin, IsAdminRole } from '../Authentification/SecureRoute';
 const NavBar = (param) => {
 
   return (
@@ -22,7 +22,7 @@ const NavBar = (param) => {
           </ul>
             
           <ul className="menu-item menu-item-right">
-          {IsAdmin() ?
+          {IsAdminRole() ?
             <li className="dropdown">
               <div className="dropbtn">Admin
                 <i className="fa fa-caret-down"></i>

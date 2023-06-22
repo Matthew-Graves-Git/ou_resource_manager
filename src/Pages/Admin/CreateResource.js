@@ -3,6 +3,7 @@ import '../../Components/css/style.css';
 import DisplayCard from '../../Components/DisplayCard';
 import ItemDescriptionCard from '../../Components/ItemDescriptionCard';
 import './resource.css';
+import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
 
 const CreateResource = () => {
     const [type, setType] = useState();
@@ -11,6 +12,9 @@ const CreateResource = () => {
     const [imageLink, setimageLink] = useState();
     const [salePrice, setSalePrice] = useState();
     const [borrowFee, setBorrowFee] = useState();
+    const [name, setname] = useState();
+    const [createEdit, setcreateEdit] = useState();
+    const [error, seterror] = useState();
 
     const [role, setRole] = useState();
     const [username, setUsername] = useState();
@@ -35,7 +39,40 @@ const CreateResource = () => {
   }, [imageLink])
 
     const handleSubmit = async (e) => {
-      
+      e.preventDefault();
+      console.log({
+        request_type: createEdit,
+        resource_category: type.toUpperCase(),
+        name: name,
+        description: "",
+        image: imageLink.name,
+        model_number: model,
+        borrow_price: borrowFee,
+        sale_price: salePrice,
+      })
+      ResourcifyApi.createOrEditResource({
+        request_type: createEdit,
+        resource_category: type.toUpperCase(),
+        name: name,
+        description: "",
+        image: imageLink.name,
+        model_number: model,
+        borrow_price: borrowFee,
+        sale_price: salePrice,
+      }).then(res=>{
+         setType("")
+        setresourceID("")
+        setmodel("")
+        setimageLink("")
+        setSalePrice("")
+        setBorrowFee("")
+        setname("")
+        setcreateEdit("")
+        seterror("Resource Saved")
+      }).catch(e=>{
+        seterror("Resource Failed to Save");
+      })
+
     }
     
     return ( 
@@ -43,22 +80,26 @@ const CreateResource = () => {
       <div className="admin-toprow">
         <div className="form-container">
           <h2>Create/Edit Resource</h2>
-          {/* {error && revealErr()} */}
+          {error && <p>{error}</p>}
           <form id="resourceForm" onSubmit={handleSubmit}>
           <div className="radio-field-box">
-            <label><input type="radio" value="create" name="type" checked />Create Resource</label>
-            <label><input type="radio" value="edit" name="type" />Edit Resource</label>
+            <label><input type="radio" value="create" name="type" onClick={e => setcreateEdit(e.target.value)}/>Create Resource</label>
+            <label><input type="radio" value="edit" name="type" onClick={e => setcreateEdit(e.target.value)}/>Edit Resource</label>
           </div>
-          <p>Resource Name:</p>
+          <p>Resource Type:</p>
           <div className="resource-select">
             <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
-                <option value="Desktop">Desktop</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Tablet">Tablet</option>
-                <option value="Projectors">Projector</option>
-                <option value="Cameras">Camera</option>
-                <option value="Calculator">Calculator</option>
+                <option value="DESKTOP">Desktop</option>
+                <option value="LAPTOP">Laptop</option>
+                <option value="TABLET">Tablet</option>
+                <option value="PROJECTOR">Projector</option>
+                <option value="CAMERA">Camera</option>
+                <option value="CALCULATOR">Calculator</option>
             </select>
+          </div>
+          <div className="text-field-box">
+            <input type="text" value={name} onChange={(e) => {setname(e.target.value)}}/>
+            <label>Resource Name</label>
           </div>
           <div className="text-field-box">
             <input type="text" value={resourceID} onChange={(e) => {setresourceID(e.target.value)}}/>
@@ -98,6 +139,8 @@ const CreateResource = () => {
           </DisplayCard>
         </div>
       </div>
+      <div className="admin-outer">
+      <div className="admin-toprow">
       <div className="form-container">
         <h2>Create/Edit User</h2>
         <form id="userForm" onSubmit={handleSubmit}>
@@ -134,7 +177,21 @@ const CreateResource = () => {
             <label>Set Funds</label>
           </div>
         </form>
+        <div className="preview">
+          <h2>Product Preview</h2>
+          <DisplayCard key={model} className='temp'>
+          <img src = {preview}></img>
+          <ItemDescriptionCard json={{
+            model: model,
+            salePrice: salePrice,
+            borrowFee: borrowFee,
+            image: preview
+            }}/>
+          </DisplayCard>
         </div>
+        </div>
+      </div>
+      </div>
       </div>
     );
 }

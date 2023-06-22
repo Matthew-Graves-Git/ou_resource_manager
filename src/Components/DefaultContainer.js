@@ -4,11 +4,15 @@ import {Outlet } from "react-router-dom";
 
 const DefaultContainer = () => {
     return ( 
+        <>
     <>
         <Navbar isLoginPage="false" />
         <Outlet/>
-        <Footer/>
     </> 
+    <>
+      <Footer/>
+    </>
+    </>
 );
 }
  

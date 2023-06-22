@@ -32,7 +32,7 @@ const SecureRoute = ({children}) => {
 //     <li><Link to="/Restock">Restock</Link></li></>}</>)
 // }
 
-const IsAdmin =  () => {
+const IsAdminRole =  () => {
   const [A, setA] = useState(false);
   useEffect(() => {
     const x = async () =>{
@@ -47,8 +47,14 @@ const IsAdmin =  () => {
     x();
   }, []);
 
+
+
     return A;
 }
+const IsAdmin =  () => {
+  if(localStorage.getItem('role') === null){}
+  return localStorage.getItem('role') === "true";
+}
 
-export {IsAdmin,SecureRoute};
+export {IsAdmin,IsAdminRole,SecureRoute};
 

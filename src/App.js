@@ -18,6 +18,7 @@ import AddFunds from './Pages/Admin/AddFunds';
 import Restock from './Pages/Restock';
 import Profile from './Pages/Profile';
 import Return from './Pages/Return';
+import Logout from './Pages/Logout';
 
 function App() {
   function importAll(r) {
@@ -139,6 +140,7 @@ window.onbeforeunload = function() {
               <Route exact path='/Restock' element={<SecureRoute><Restock/></SecureRoute>} />
               <Route exact path='/Profile' element={<SecureRoute><Profile/></SecureRoute>} />
               <Route exact path='/Return' element={<SecureRoute><Return/></SecureRoute>} />
+              <Route exact path='/Logout' element={<SecureRoute><Logout/></SecureRoute>} />
               <Route exact path='/CreateResource' element={<SecureRoute><CreateResource/></SecureRoute>} />
             </Route>
           </Routes>

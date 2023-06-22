@@ -59,6 +59,16 @@ const restockItem = async (e) => {
           </div>
         </form>
       </div>
+      <div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+      </div>
     </div>
     );
 }
