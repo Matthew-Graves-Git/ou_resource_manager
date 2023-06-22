@@ -65,36 +65,19 @@ const Home = (props) => {
                 </a>
             </header>
             <div className="content">
-                <h1 id="all_products">All Products</h1>
-                <div className='filter'>
-                        <input type="text" placeholder="Search product"/><button>Search</button>
-                        <div className="filterMenu">
-                            <button className="selected">All</button>
-                            <Link to="/PCs"><button>PC</button></Link>
-                            <Link to="/Laptops"><button>Laptops</button></Link>
-                            <Link to="/Tablets"><button>Tablets</button></Link>
-                            <Link to="/Accesories"><button>Accessories</button></Link>
-                        </div>
-                </div>
-
-                <div className='hole'>
-                    <div className="row">
-                    {cred = IsAdmin()}
-                    {items && items.map((item) => {return (
-                      
-                    <div className="column">
-                      {cred && <button className="restock"><Link to="/Restock" state={{ id: item.role[0], name:item.name}}>Restock</Link></button>}
-                    <DisplayCard key={item.model} className='temp'>
-                    <img alt={item.name} src={item.image}></img>
-                    
-                    <ItemDescriptionCard json={item}/>
-                    
-                    <button className='Item-button'>Buy</button>
-                    <button className='Item-button'onClick={() => props.assets.handleRent(item.role,item.model, props.assets.cat)}>Rent</button>
-                    
-                    </DisplayCard>
+                <div className="home-content">
+                    <div className="content-row">
+                        <h3>Store Information</h3>
+                        <p><b>Location:</b> 444 S. Cedros Ave<br /> Solana Beach, California</p>
+                        <p><b>Operating hours:</b> 8am - 6pm, Monday to Saturday</p>
                     </div>
-                    )})}
+
+                    <div className="content-row">
+                        <h3>Basic Information</h3>
+                        <ul className="information">
+                            <li>You can only add funds in person at our store.</li>
+                            <li>You can only borrow 3 items at a time.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
