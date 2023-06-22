@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import '../../Components/css/style.css';
-import DisplayCard from '../../Components/DisplayCard';
-import ItemDescriptionCard from '../../Components/ItemDescriptionCard';
 import './resource.css';
 import { ResourcifyApi } from '../../Authentification/ResourcifyApi';
 
@@ -50,7 +48,7 @@ const CreateUser = () => {
             <label><input type="radio" value="editUser" name="type" />Edit User</label>
           </div>
           <div className="role-select">
-            <select from="resourceForm" onChange={(e) => {setRole(e.target.value)}}>
+            <select from="resourceForm" onChange={(e) => {setRole(e.target.value.toUpperCase())}}>
               <option value="Admin">Admin</option>
               <option value="Worker">Worker</option>
               <option value="Teacher">Teacher</option>

@@ -43,6 +43,7 @@ const Cart = (props) => {
         const newTotal = tempCart.filter((items) => {
           return (item == items.role[0])
          })
+      const cart = await ResourcifyApi.deleteAllCart(ids)
       setCurrentCart(result)
     }
 

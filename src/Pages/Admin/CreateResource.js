@@ -16,13 +16,6 @@ const CreateResource = () => {
     const [createEdit, setcreateEdit] = useState();
     const [error, seterror] = useState();
 
-    const [role, setRole] = useState();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [firstname, setFirstname] = useState();
-    const [lastname, setLastname] = useState();
-    const [funds, setFunds] = useState();
-
     const [preview, setPreview] = useState();
 
 
@@ -40,19 +33,9 @@ const CreateResource = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log({
-        request_type: createEdit,
-        resource_category: type.toUpperCase(),
-        name: name,
-        description: "",
-        image: imageLink.name,
-        model_number: model,
-        borrow_price: borrowFee,
-        sale_price: salePrice,
-      })
       ResourcifyApi.createOrEditResource({
         request_type: createEdit,
-        resource_category: type.toUpperCase(),
+        resource_category: type,
         name: name,
         description: "",
         image: imageLink.name,
@@ -88,7 +71,7 @@ const CreateResource = () => {
           </div>
           <p>Resource Type:</p>
           <div className="resource-select">
-            <select from="resourceForm" onChange={(e) => {setType(e.target.value)}}>
+            <select from="resourceForm" onChange={(e) => {setType(e.target.value.toUpperCase())}}>
                 <option value="DESKTOP">Desktop</option>
                 <option value="LAPTOP">Laptop</option>
                 <option value="TABLET">Tablet</option>
@@ -102,7 +85,7 @@ const CreateResource = () => {
             <label>Resource Name</label>
           </div>
           <div className="text-field-box">
-            {createEdit === "create" ? <input type="text" value={resourceID} onChange={(e) => {setresourceID(e.target.value)}}/> : <input value="" disabled={true}></input>}
+            {createEdit === "create" ? <input type="text" value={resourceID} disabled={true} onChange={(e) => {setresourceID(e.target.value)}}/> : <input value="" disabled={true}></input>}
             <label>Resource ID</label>
           </div>
           <div className="text-field-box">
@@ -129,7 +112,7 @@ const CreateResource = () => {
         <div className="preview">
           <h2>Product Preview</h2>
           <DisplayCard key={model} className='temp'>
-          <img src = {preview}></img>
+          <img alt = "UploadImage" src = {preview}></img>
           <ItemDescriptionCard json={{
             model: model,
             salePrice: salePrice,

@@ -109,7 +109,7 @@ const Profile = () => {
                     <div className="history-select">
                         <b>History:</b>
                         <select from="history" onChange={(e) => {setHistoryType(e.target.value)}}>
-                            <option value="rent">Borrow History</option>
+                            <option value="rent">Current Rentals</option>
                             <option value="buy">Purchase History</option>
                         </select>
                     </div>
