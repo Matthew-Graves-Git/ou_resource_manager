@@ -88,9 +88,8 @@ const CreateResource = () => {
         <div className="preview">
           <h2>Product Preview</h2>
           <DisplayCard key={model} className='temp'>
-          <img  alt= {resourceName}src = {preview}></img>
+          <img src = {preview}></img>
           <ItemDescriptionCard json={{
-            name: resourceName,
             model: model,
             salePrice: salePrice,
             borrowFee: borrowFee,
@@ -102,7 +101,11 @@ const CreateResource = () => {
       <div className="form-container">
         <h2>Create/Edit User</h2>
         <form id="userForm" onSubmit={handleSubmit}>
-          <div className="selectForm">
+          <div className="radio-field-box">
+            <label><input type="radio" value="createUser" name="type" checked />Create User</label>
+            <label><input type="radio" value="editUser" name="type" />Edit User</label>
+          </div>
+          <div className="role-select">
             <select from="resourceForm" onChange={(e) => {setRole(e.target.value)}}>
               <option value="Admin">Admin</option>
               <option value="Worker">Worker</option>
