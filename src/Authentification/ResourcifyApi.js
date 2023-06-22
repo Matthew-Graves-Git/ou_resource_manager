@@ -3,10 +3,10 @@ import { config } from './Constants'
 
 export const ResourcifyApi = {
   authenticate,
-  signup,
+  createOrEditUser,
   basicAuth,
   IsAdmin,
-  getAllItems,
+  getResources,
   getQty,
   createAll,
   addToCart,
@@ -133,7 +133,7 @@ function purchase(req) {
 }
 
 
-function getAllItems(category) {
+function getResources(category) {
   return instance.post('/demo/get/resource', category, {
     headers: {"Access-Control-Allow-Origin": '*'},
       proxy: {
@@ -159,14 +159,15 @@ function getQty(id) {
   })
 }
 
-function signup(firstName, lastName,username, password) {
-  return instance.post('/demo/add',
+function createOrEditUser(request_type, role, username, password, lastname, firstname) {
+  return instance.post('/demo/add/user',
     {
-      role:"STUDENT",
-      username: username,
+      request_type:request_type,
+      role:role,
+      username:username,
       password:password,
-      lastname: lastName,
-      firstname: firstName
+      lastname:lastname,
+      firstname:firstname
     },
     {
     headers: { 'Content-type': 'application/json',

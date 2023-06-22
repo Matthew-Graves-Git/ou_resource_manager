@@ -32,10 +32,6 @@ const Login = () => {
       return <p>Bad Credentials, Try Again</p>
     }
 
-    const signUpRequest = () =>{
-      navigate("/SignUp");
-    }
-
     return ( 
       <>
         <div className="content login">

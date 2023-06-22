@@ -22,7 +22,7 @@ const Laptop = (props) => {
   useEffect( () => {
     const all = [];
     async function getResources(category){
-      const resources = await ResourcifyApi.getAllItems({resource_category:category});
+      const resources = await ResourcifyApi.getResources({resource_category:category});
       if(resources){
         resources.data.forEach( async (item) => {
           //const stock = await getResourceQty(item.resourceId)

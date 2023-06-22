@@ -1,18 +1,3 @@
-import { ResourcifyApi } from "./Authentification/ResourcifyApi";
-
-function importAll(r) {
-    let images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-    return images;
-  }
-
-  const images = importAll(require.context('./Images', false, /\.(png|gif|jpe?g|svg)$/));
-
-
-
-   
-   
-
 
 const tablets = [
 {
@@ -57,7 +42,6 @@ const tablets = [
       stock: "1 Available",
       image: 'tablet-4.png'
 },
-
 ]
 
 const pc = [
@@ -89,10 +73,7 @@ const pc = [
         stock: "1 Available",
         image: 'pc-4.png'
     },
-
-
 ]
-
 
 const accesorie = [
     {
@@ -123,8 +104,6 @@ const accesorie = [
         stock: "1 Available",
         image: 'acc-4.png'
     },
-
-
 ]
 
 const laptop = [
@@ -173,10 +152,5 @@ const laptop = [
     },
 ]
 
-const all = tablets.concat(accesorie.concat(pc.concat(laptop)));
 
-
-
-
-
-export {all, tablets, accesorie, pc, laptop};
+export {tablets, accesorie, pc, laptop};

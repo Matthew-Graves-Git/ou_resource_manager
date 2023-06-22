@@ -24,7 +24,7 @@ public class MainController {
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder =  new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder;
 
     public void updateQuantity(int resource_id) {
         Resource r = resourcerepository.findById(resource_id).get();

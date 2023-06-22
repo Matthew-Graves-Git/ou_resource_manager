@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {all, tablets, accesorie, pc, laptop} from './temp';
+import {tablets, accesorie, pc, laptop} from './temp';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import { AuthProvider } from './Authentification/Auth';
@@ -12,7 +12,6 @@ import LoginContainer from './Components/LoginContainer';
 import PC from './Pages/PC';
 import Accesories from './Pages/Accesories';
 import Tablet from './Pages/Tablet';
-import SignUp from './Pages/SignUp';
 import CreateResource from './Pages/Admin/CreateResource';
 import { ResourcifyApi } from './Authentification/ResourcifyApi';
 import AddFunds from './Pages/Admin/AddFunds';
@@ -46,26 +45,31 @@ const filterResources = (all) =>{
   )))
 }
 
-// function postAll(array, cat){
-//   array.forEach(async element => {
-//       await ResourcifyApi.createAll(
-//       {
-//           ...element,
-//           resource_category:cat,
-//           sale_price:"199.00",
-//           description:"",
-//           request_type: "create"
-//       }
-//       )
-//   });
-// }
-//
-// useEffect( () => {
-//   postAll(laptop,"LAPTOP")
-//   postAll(pc,"DESKTOP")
-//   postAll(tablets,"TABLET")
-//   postAll(accesorie,"CALCULATOR")
-// }, [] );
+  async function postAll(array, cat){
+    for(const element of array) {
+      await ResourcifyApi.createAll(
+            {
+        ...element,
+        resource_category: cat,
+        sale_price: "199.00",
+        description: "",
+        request_type: "create"
+      });
+    }
+  }
+
+  const hasStuffInDatabase = async () => {
+    // Check if there are resources in the "DESKTOP" category
+    const resources = await ResourcifyApi.getResources({resource_category:"DESKTOP"});
+    if (!resources.data || resources.data.length === 0) {
+      await postAll(laptop,"LAPTOP");
+      await postAll(pc,"DESKTOP");
+      await postAll(tablets,"TABLET");
+      await postAll(accesorie,"CALCULATOR");
+      await ResourcifyApi.createOrEditUser("create","ADMIN","admin","admin","Administrator","Test");
+    }
+  };
+  hasStuffInDatabase();
 
 const handleRent = async (role,model,category) =>{
   const [id,cat] = role;
@@ -114,7 +118,6 @@ window.onbeforeunload = function() {
           <Routes>
             <Route element={<LoginContainer/>}>
               <Route exact path='/' element={<Login/>} />
-              <Route exact path='/SignUp' element={<SignUp/>} />
             </Route>
             <Route element={<DefaultContainer/>}>
               <Route exact path='/Home' element={<SecureRoute><Home assets={prop}/></SecureRoute>} />
