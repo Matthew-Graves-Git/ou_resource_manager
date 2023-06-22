@@ -46,7 +46,7 @@ public class User {
 
     public String getFirstname() { return firstname; }
 
-    public void setFirstname(String firstName) { this.firstname = firstname; }
+    public void setFirstname(String firstName) { this.firstname = firstName; }
 
     public float getAvailableFunds() { return availableFunds; }
 

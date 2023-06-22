@@ -14,4 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM ITEM WHERE username = ?1 AND item_type = ?2 ")
     Optional<List<Item>> getItemsByUsername(String username, String itemType);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM ITEM WHERE resource_id = ?1 AND serial_number = ?2 ")
+    Optional<List<Item>> getItemsBySerialNumber(Integer resource_id, String serialNumber);
 }

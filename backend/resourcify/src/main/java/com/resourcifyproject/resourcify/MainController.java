@@ -7,8 +7,9 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,11 @@ public class MainController {
     private ResourceRepository resourcerepository;
     @Autowired
     private ItemRepository itemRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+
+    public PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public void updateQuantity(int resource_id) {
         Resource r = resourcerepository.findById(resource_id).get();
@@ -90,7 +94,7 @@ public class MainController {
             resourcerepository.save(r);
             return "Created New Resource";
         }
-        else if ( payload.get("request_type").textValue().equals("edit") && resourcerepository.findById(  payload.get("resource_id").asInt() ).isPresent() ) {
+        else if (resourcerepository.findById(  payload.get("resource_id").asInt() ).isPresent() ) {
             Resource r = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
             r.setResourceCategory(payload.get("resource_category").textValue());
             r.setName(payload.get("name").textValue());
@@ -110,6 +114,9 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/add/item")
     public @ResponseBody String addNewItem (@RequestBody JsonNode payload) {
+        if ( !itemRepository.getItemsBySerialNumber(  payload.get("resource_id").asInt(), payload.get("serial_number").asText()  ).get().isEmpty() ) {
+            return "An Item With That Serial Number Already Exists For That Resource";
+        }
         Resource r = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         Item i = new Item();
         i.setResource(r);
@@ -124,6 +131,9 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/get/resource")
     public @ResponseBody List<Resource> getResourcesByType(@RequestBody JsonNode payload) {
+        if(payload.get("resource_category").asText().equals("ALL")){
+            return resourcerepository.findAll();
+        }
         return resourcerepository.getResources(  payload.get("resource_category").asText() ).get();
     }
 
@@ -135,7 +145,7 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/user/purchased")
+    @GetMapping(path="/get/user/purchased")
     public @ResponseBody List<Item> getPurchasedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         List<Item> purchasedItems = itemRepository.getItemsByUsername(  user.getUsername(), "SALE"  ).get();
@@ -146,7 +156,7 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/user/borrowed")
+    @GetMapping(path="/get/user/borrowed")
     public @ResponseBody List<Item> getBorrowedItems(HttpServletRequest request) throws ResourceNotFoundException {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         List<Item> borrowedItems = itemRepository.getItemsByUsername(  user.getUsername(), "BORROW"  ).get();
@@ -155,9 +165,19 @@ public class MainController {
         }
         return borrowedItems;
     }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/find/user/borrowed")
+    public @ResponseBody List<Item> getBorrowedItemsByUser(@RequestBody JsonNode payload) throws ResourceNotFoundException {
+        User user = userRepository.findByUsername(  payload.get("username").asText()  ).get();
+        List<Item> borrowedItems = itemRepository.getItemsByUsername(  user.getUsername(), "BORROW"  ).get();
+        if(borrowedItems.isEmpty()){
+            throw new ResourceNotFoundException("You are not currently borrowing any items!");
+        }
+        return borrowedItems;
+    }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(path="/get/user")
+    @GetMapping(path="/get/user")
     public @ResponseBody User getUser(HttpServletRequest request) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         return user;
@@ -174,12 +194,14 @@ public class MainController {
         return "Added To Cart";
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/do/cart_remove")
     public @ResponseBody String removeFromCart(HttpServletRequest request, @RequestBody JsonNode payload) {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         List<String> cart = user.getCart();
-        cart.remove(payload.get("resource_id").asText());
+        for(JsonNode item: payload) {
+            cart.remove(item.get("resource_id").asText());
+        }
         user.setCart(cart);
         userRepository.save(user);
         return "Removed From Cart";
@@ -191,16 +213,19 @@ public class MainController {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         Resource resource = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         if ( user.getAvailableFunds() < resource.getSalePrice() ) {
-            throw new ForbiddenException(); //They don't have enough money
+            throw new ArithmeticException(); //They don't have enough money
         }
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(),  ItemType.SALE.name(), true  ) < 1 ) {
-            throw new ArithmeticException(); //There is not an item available to purchase
+            throw new ResourceNotFoundException(); //There is not an item available to purchase
         }
         Item itemToPurchase = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.SALE.name(), true  ).get();
         itemToPurchase.setAvailable(false);
         itemToPurchase.setUsername(user.getUsername());
         itemToPurchase.setTransactionPrice(resource.getSalePrice());
         itemToPurchase.setTransactionTime(LocalDateTime.now());
+        user.setAvailableFunds( user.getAvailableFunds() - resource.getSalePrice() );
+        itemRepository.save(itemToPurchase);
+        userRepository.save(user);
         updateQuantity(payload.get("resource_id").asInt());
         return "Purchase Successful!";
     }
@@ -211,10 +236,13 @@ public class MainController {
         User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
         Resource resource = resourcerepository.findById(  payload.get("resource_id").asInt()  ).get();
         if ( user.getAvailableFunds() < resource.getBorrowPrice() ) {
-            throw new ForbiddenException(); //They don't have enough money
+            throw new ArithmeticException(); //They don't have enough money
         }
         if ( itemRepository.countItems(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ) < 1 ) {
-            throw new ArithmeticException(); //There is not an item available to borrow
+            throw new ResourceNotFoundException(); //There is not an item available to borrow
+        }
+        if ( user.getRole() == Role.STUDENT && itemRepository.getItemsByUsername(  request.getRemoteUser() , ItemType.BORROW.name()  ).get().size() >= 3 ) {
+            throw new ForbiddenException(); //The Student is already borrowing 3 items
         }
         Item itemToBorrow = itemRepository.getItemForTransaction(  payload.get("resource_id").asInt(), ItemType.BORROW.name(), true  ).get();
         itemToBorrow.setAvailable(false);
@@ -222,18 +250,32 @@ public class MainController {
         itemToBorrow.setTransactionPrice(resource.getBorrowPrice());
         itemToBorrow.setTransactionTime(LocalDateTime.now());
         itemToBorrow.setBorrowTime(payload.get("borrow_time").asLong());
+        user.setAvailableFunds( user.getAvailableFunds() - resource.getBorrowPrice() );
+        itemRepository.save(itemToBorrow);
+        userRepository.save(user);
         updateQuantity(payload.get("resource_id").asInt());
         return "Borrow Successful!";
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path="/do/update_password")
+    public @ResponseBody String updatePassword(HttpServletRequest request, @RequestBody JsonNode payload) {
+        User user = userRepository.findByUsername(  request.getRemoteUser()  ).get();
+        user.setPassword(  passwordEncoder.encode(payload.get("new_password").textValue())  );
+        userRepository.save(user);
+        return "Password Updated";
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path="/do/return")
     public @ResponseBody String doReturn(@RequestBody JsonNode payload) {
-        Item item = itemRepository.findById(  payload.get("item_id").asInt()  ).get();
+        Item item = itemRepository.findById(  Integer.parseInt(payload.get("item_id").asText()) ).get();
         item.setTransactionTime(null);
         item.setTransactionPrice(null);
         item.setBorrowTime(null);
-        updateQuantity(payload.get("resource_id").asInt());
+        item.setUsername(null);
+        item.setAvailable(true);
+        itemRepository.save(item);
+        updateQuantity(Integer.parseInt(payload.get("resource_id").asText()));
         return "Return Successful!";
     }
 

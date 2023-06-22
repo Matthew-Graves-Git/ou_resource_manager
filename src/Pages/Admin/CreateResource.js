@@ -93,7 +93,7 @@ const CreateResource = () => {
             name: resouceName,
               model: model,
               price: price,
-              stock: numAvailible + " Availability",
+              stock: numAvailible + " In Stock",
               image: preview
         }}/>
         </DisplayCard>

@@ -65,10 +65,12 @@
 
 .availiable{
   background-color: #f4e0e0;
-  width: 100%;
+  width: 50%;
   border-radius: 1%;
   height: 100%;
-  
+  margin-left: 25%;
+  margin-top: 10px;
+
 }
 .price{
   color: #01764f;
@@ -81,8 +83,8 @@
 }
 
 .Item-button{
-    margin: 10px 20px;
-    text-align: center;
+  margin: 10px 20px;
+  text-align: center;
 }
 
 
